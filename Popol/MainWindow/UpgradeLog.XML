@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="MainWindow">
+</Property><Property Name="솔루션 파일" Value="D:\GitHub\SGA43_2D_Choi\MainWindow\MainWindow.sln">
+</Property><Property Name="Date" Value="2014년 4월 11일 금요일">
+</Property><Property Name="Time" Value="오후 23:40:41">
+</Property></Properties><Event ErrorLevel="0" Project="MainWindow" Source="MainWindow.vcproj" Description="Converting project file 'D:\GitHub\SGA43_2D_Choi\MainWindow\MainWindow.vcproj'.">
+</Event><Event ErrorLevel="1" Project="MainWindow" Source="MainWindow.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="MainWindow" Source="MainWindow.vcproj" Description="Done converting to new project file 'D:\GitHub\SGA43_2D_Choi\MainWindow\MainWindow.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="MainWindow" Source="MainWindow.vcproj" Description="Converted">
+</Event></UpgradeLog>

@@ -1,0 +1,26 @@
+﻿빌드 시작: 2014-04-12 오전 12:12:33
+     1>2 노드의 "D:\GitHub\SGA43_2D_Choi\Popol\Popol\Popol.vcxproj" 프로젝트(build 대상)입니다.
+     1>InitializeBuildStatus:
+         "Debug\Popol.unsuccessfulbuild"에 연결(touching)하고 있습니다.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt winmain.cpp
+         winmain.cpp
+       ManifestResourceCompile:
+         모든 출력이 최신 상태입니다.
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\GitHub\SGA43_2D_Choi\Popol\Debug\Popol.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Popol.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\GitHub\SGA43_2D_Choi\Popol\Debug\Popol.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\GitHub\SGA43_2D_Choi\Popol\Debug\Popol.lib" /MACHINE:X86 Debug\Popol.exe.embed.manifest.res
+         Debug\winmain.obj
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\Popol.exe.embed.manifest" /manifest Debug\Popol.exe.intermediate.manifest
+         모든 출력이 최신 상태입니다.
+       LinkEmbedManifest:
+         모든 출력이 최신 상태입니다.
+         Popol.vcxproj -> D:\GitHub\SGA43_2D_Choi\Popol\Debug\Popol.exe
+       FinalizeBuildStatus:
+         "Debug\Popol.unsuccessfulbuild" 파일을 삭제하고 있습니다.
+         "Debug\Popol.lastbuildstate"에 연결(touching)하고 있습니다.
+     1>"D:\GitHub\SGA43_2D_Choi\Popol\Popol\Popol.vcxproj" 프로젝트를 빌드했습니다(build 대상).
+
+빌드했습니다.
+
+경과 시간: 00:00:01.58
