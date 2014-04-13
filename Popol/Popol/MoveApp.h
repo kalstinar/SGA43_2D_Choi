@@ -111,6 +111,13 @@ public :
 		//	}
 		//}
 
+		const int table_xy =200;
+		BkGround.Draw(buffer, Rect(0,0,800,600));
+		Table.Draw(buffer, Rect(table_xy,table_xy,table_xy + 200,table_xy+270));
+		
+		//kirobot.AddImage();
+		//arabprin.AddImage();
+		
 
 		if (mode == CONTROL_MODE)
 		{
@@ -170,6 +177,12 @@ protected :
 
 		//block.load(_T("block.bmp"));
 
+		BkGround.load(_T("Base.bmp"), Rect(0, 0, 800,600));
+		
+
+		//Table.load(_T("Table.bmp"), Rect(0,0,205,270));
+		//Table.SetTransparent(RGB(104,144,168));
+		
 
 
 		hMainDC = ::GetDC(hWnd);
@@ -179,16 +192,16 @@ protected :
 
 
 		btnMini.Attach(hWnd);
-		btnMini.SetImageOn(_T("button2.bmp"), Rect(50,0,100,50));
-		btnMini.SetImageOff(_T("button2.bmp"), Rect(0,0,50,50));
+		btnMini.SetImageOn(_T("button.bmp"), Rect(50,0,100,50));
+		btnMini.SetImageOff(_T("button.bmp"), Rect(0,0,50,50));
 		btnMini.SetTransparent(RGB(255,0,255));
 		btnMini.SetButtonRect(Rect(800 - 50*2, 0, 800 - 50, 50));
 		btnMini.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
 
 
 		btnClose.Attach(hWnd);
-		btnClose.SetImageOn(_T("button2.bmp"), Rect(150,0,200,50));
-		btnClose.SetImageOff(_T("button2.bmp"), Rect(100,0,150,50));
+		btnClose.SetImageOn(_T("button.bmp"), Rect(150,0,200,50));
+		btnClose.SetImageOff(_T("button.bmp"), Rect(100,0,150,50));
 		btnClose.SetTransparent(RGB(255,0,255));
 		btnClose.SetButtonRect(Rect(800 - 50, 0, 800, 50));
 		btnClose.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_CLOSE, 0);
@@ -213,6 +226,16 @@ private :
 	HDC hMainDC;
 	HDC hBitmapDC;
 	Image gray;
+	
+/////////////////////////////////////////////////////////////////////////////////////////////////	
+	
+	//배경
+	Image BkGround;
+	//책상
+	Image Table;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 	//Image block;
 
@@ -233,6 +256,9 @@ private :
 	Point ptPrev;
 	Point ptMouse;
 	bool bGrabWindow;
+
+	Animation kirobot;
+	Animation arabprin;
 
 	//////////////////////////
 	// moving background...
