@@ -14,10 +14,12 @@ class MoveApp : public MainWindow<MoveApp>
 		INGAME_MODE,
 		CONTROL_MODE,
 	};
+	
+
 
 public :
 	MoveApp()
-		: mode(INGAME_MODE)
+		: mode(INGAME_MODE) 
 		, FPS_dt(0), FPS_frame(0)
 		, bGrabWindow(false), hMainWnd(NULL)
 	//	, dx(0), bg_update_dt(0), bg_update_delay(5)
@@ -42,6 +44,8 @@ public :
 			btnClose.Update(tick);
 			//btnMax.Update(tick);
 			//btnBase.Update(tick);
+			
+			
 
 			if (InputDevice[VK_LBUTTON])
 			{
@@ -55,6 +59,11 @@ public :
 			ptPrev = ptMouse;
 			ptMouse = InputDevice.getPos();
 		}
+		btnIGMenu1.Update(tick);
+		btnIGMenu2.Update(tick);
+		btnIGMenu3.Update(tick);
+		btnIGMenu4.Update(tick);
+		btnIGMenu5.Update(tick);
 	}
 	void Update(DWORD tick)
 	{
@@ -115,13 +124,24 @@ public :
 
 		const int table_xy =200;
 		
+		//배경
 		BkGround.Draw(buffer, Rect(0,50,700,550));
 		IGMenu.Draw(buffer, Rect(700,50,850,550));
 		CalendarBG.Draw(buffer, Rect(0,0,850,50));
 		MakeBG.Draw(buffer, Rect(0,550,850,700));
 		ClockBG.Draw(buffer, Rect(700,550,850,700));
 
-		Table.Draw(buffer, Rect(table_xy,table_xy,table_xy + 200,table_xy+270));
+		Table1.Draw(buffer, Rect(250,250,342,370));
+
+
+		//인게임 버튼
+		btnIGMenu1.Draw(buffer);
+		btnIGMenu2.Draw(buffer);
+		btnIGMenu3.Draw(buffer);
+		btnIGMenu4.Draw(buffer);
+		btnIGMenu5.Draw(buffer);
+
+		
 		
 		//kirobot.AddImage();
 		//arabprin.AddImage();
@@ -144,7 +164,10 @@ public :
 			btnClose.Draw(buffer);
 			//btnMax.Draw(buffer);
 			//btnBase.Draw(buffer);
+			
 		}
+
+
 
 		TCHAR szDebug[200];
 		_stprintf_s(szDebug, _T("FPS : %08d"), dwFPS);
@@ -163,22 +186,24 @@ protected :
 	{
 		AddEventHandler(WM_CREATE, &Me::OnCreate);
 		AddEventHandler(WM_DESTROY, &Me::OnDestroy);
-		AddEventHandler(WM_SYSCOMMAND, &Me::OnSysCommand);
+		//AddEventHandler(WM_SYSCOMMAND, &Me::OnSysCommand);
 	}
-	LRESULT OnSysCommand(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-	{
-		if (SC_MAXIMIZE == wParam)
-		{
-			::DefWindowProc(hWnd, uMsg, wParam, lParam);
-			buffer.Attach(hWnd);
-			::GetClientRect(hWnd, &rcClient);
-		}
-		else
-		{
-			return ::DefWindowProc(hWnd, uMsg, wParam, lParam);
-		}
-		return 0;
-	}
+
+
+	//LRESULT OnSysCommand(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	//{
+	//	if (SC_MAXIMIZE == wParam)
+	//	{
+	//		::DefWindowProc(hWnd, uMsg, wParam, lParam);
+	//		buffer.Attach(hWnd);
+	//		::GetClientRect(hWnd, &rcClient);
+	//	}
+	//	else
+	//	{
+	//		return ::DefWindowProc(hWnd, uMsg, wParam, lParam);
+	//	}
+	//	return 0;
+	//}
 
 	LRESULT OnCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
@@ -186,6 +211,10 @@ protected :
 		hMainWnd = hWnd;
 
 		//block.load(_T("block.bmp"));
+
+/////////////////////////////////////////////////////////////////////////////
+
+//배경 등록
 
 		BkGround.load(_T("Base.bmp"), Rect(0, 0, 800,600));
 
@@ -195,11 +224,13 @@ protected :
 		MakeBG.load(_T("MakeBG.bmp"), Rect(0, 0, 800,600));
 		ClockBG.load(_T("Clock.bmp"), Rect(0, 0, 150,150));
 		ClockBG.SetTransparent(RGB(255,0,255));
-		
 
-		//Table.load(_T("Table.bmp"), Rect(0,0,205,270));
-		//Table.SetTransparent(RGB(104,144,168));
+////////////////////////////////////////////////////////////////////////////
+
 		
+		Table1.load(_T("Table.bmp"), Rect(0,0,93,120));
+		Table1.SetTransparent(RGB(255,0,255));
+
 
 
 		hMainDC = ::GetDC(hWnd);
@@ -207,6 +238,8 @@ protected :
 		gray.load(_T("gray.bmp"), Rect(0,0,10,10));
 		Select(hBitmapDC, HBITMAP(gray));
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//Control Mode 버튼 등록
 
 		btnMini.Attach(hWnd);
 		btnMini.SetImageOn(_T("button.bmp"), Rect(50,0,100,50));
@@ -242,7 +275,39 @@ protected :
 		btnClose.SetButtonRect(Rect(850 - 50, 0, 850, 50));
 		btnClose.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_CLOSE, 0);
 
+////////////////////////////////////////////////////////////////////////////////////////////////		
+//인게임 버튼 등록
 
+		btnIGMenu1.Attach(hWnd);
+		btnIGMenu1.SetImageOn(_T("BtnMenu1.bmp"), Rect(0,0,110,50));
+		btnIGMenu1.SetImageOff(_T("BtnMenu1.bmp"), Rect(0,0,110,50));
+		btnIGMenu1.SetButtonRect(Rect(720, 115, 830, 165));
+		btnIGMenu1.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+
+		btnIGMenu2.Attach(hWnd);
+		btnIGMenu2.SetImageOn(_T("BtnMenu2.bmp"), Rect(0,0,110,50));
+		btnIGMenu2.SetImageOff(_T("BtnMenu2.bmp"), Rect(0,0,110,50));
+		btnIGMenu2.SetButtonRect(Rect(720, 190, 830, 240));
+		btnIGMenu2.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+
+		btnIGMenu3.Attach(hWnd);
+		btnIGMenu3.SetImageOn(_T("BtnMenu3.bmp"), Rect(0,0,110,50));
+		btnIGMenu3.SetImageOff(_T("BtnMenu3.bmp"), Rect(0,0,110,50));
+		btnIGMenu3.SetButtonRect(Rect(720, 270, 830, 320));
+		btnIGMenu3.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+
+		btnIGMenu4.Attach(hWnd);
+		btnIGMenu4.SetImageOn(_T("BtnMenu4.bmp"), Rect(0,0,110,50));
+		btnIGMenu4.SetImageOff(_T("BtnMenu4.bmp"), Rect(0,0,110,50));
+		btnIGMenu4.SetButtonRect(Rect(720, 350, 830, 400));
+		btnIGMenu4.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+
+		btnIGMenu5.Attach(hWnd);
+		btnIGMenu5.SetImageOn(_T("BtnMenu5.bmp"), Rect(0,0,110,50));
+		btnIGMenu5.SetImageOff(_T("BtnMenu5.bmp"), Rect(0,0,110,50));
+		btnIGMenu5.SetButtonRect(Rect(720, 430, 830, 480));
+		btnIGMenu5.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 		buffer.Attach(hWnd);
 		return 0;
@@ -270,7 +335,7 @@ private :
 	//배경
 	Image BkGround;
 	//책상
-	Image Table;
+	Image Table1;
 	//인게임 메뉴
 	Image IGMenu;
 	Image CalendarBG;
@@ -288,21 +353,30 @@ private :
 	// FPS : Frame Per Second.
 	// FPS_dt(ms) : FPS_frame = 1000ms : x
 	// FPS_frame*1000/FPS_dt = x
+	
 	DWORD FPS_dt;
 	DWORD FPS_frame;
 	DWORD dwFPS;
 
 	//버튼
 	Button btnMini;
+	//Button btnMax;
+	//Button btnBase;
 	Button btnClose;
-	Button btnMax;
-	Button btnBase;
+
+	//인게임 메뉴 버튼
+	Button btnIGMenu1;
+	Button btnIGMenu2;
+	Button btnIGMenu3;
+	Button btnIGMenu4;
+	Button btnIGMenu5;
 
 	HWND hMainWnd;
 	Point ptPrev;
 	Point ptMouse;
 	bool bGrabWindow;
 
+	//애니메이션 변수 설정
 	Animation kirobot;
 	Animation arabprin;
 
@@ -311,4 +385,6 @@ private :
 	//LONG dx;
 	//DWORD bg_update_dt;
 	//DWORD bg_update_delay;
+
+
 };

@@ -12,4 +12,11 @@
 #include "image.h"
 #include "animation.h"
 
+///////////////////////////
+enum msg_id
+{
+	WM_CONTR = WM_USER + 1
+};
+////////////////////////////
+
 #endif // __SGA_HPP__
