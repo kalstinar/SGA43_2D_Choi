@@ -114,7 +114,13 @@ public :
 		//}
 
 		const int table_xy =200;
+		
 		BkGround.Draw(buffer, Rect(0,50,700,550));
+		IGMenu.Draw(buffer, Rect(700,50,850,550));
+		CalendarBG.Draw(buffer, Rect(0,0,850,50));
+		MakeBG.Draw(buffer, Rect(0,550,850,700));
+		ClockBG.Draw(buffer, Rect(700,550,850,700));
+
 		Table.Draw(buffer, Rect(table_xy,table_xy,table_xy + 200,table_xy+270));
 		
 		//kirobot.AddImage();
@@ -182,6 +188,13 @@ protected :
 		//block.load(_T("block.bmp"));
 
 		BkGround.load(_T("Base.bmp"), Rect(0, 0, 800,600));
+
+		IGMenu.load(_T("IGMenu.bmp"), Rect(0, 0, 800,600));
+
+		CalendarBG.load(_T("CalendarBG.bmp"), Rect(0, 0, 800,600));
+		MakeBG.load(_T("MakeBG.bmp"), Rect(0, 0, 800,600));
+		ClockBG.load(_T("Clock.bmp"), Rect(0, 0, 150,150));
+		ClockBG.SetTransparent(RGB(255,0,255));
 		
 
 		//Table.load(_T("Table.bmp"), Rect(0,0,205,270));
@@ -258,6 +271,11 @@ private :
 	Image BkGround;
 	//책상
 	Image Table;
+	//인게임 메뉴
+	Image IGMenu;
+	Image CalendarBG;
+	Image MakeBG;
+	Image ClockBG;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
