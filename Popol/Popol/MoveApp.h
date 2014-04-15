@@ -23,7 +23,7 @@ public :
 	//	, dx(0), bg_update_dt(0), bg_update_delay(5)
 	{
 		//SetWindowTitle(_T("Alphablend Sample"));
-		SetWindowSize(800, 600);
+		SetWindowSize(850, 700);
 		SetWindowStyle(WS_POPUP | WS_VISIBLE);
 	}
 	void Input(DWORD tick)
@@ -40,6 +40,8 @@ public :
 		{
 			btnMini.Update(tick);
 			btnClose.Update(tick);
+			//btnMax.Update(tick);
+			//btnBase.Update(tick);
 
 			if (InputDevice[VK_LBUTTON])
 			{
@@ -112,7 +114,7 @@ public :
 		//}
 
 		const int table_xy =200;
-		BkGround.Draw(buffer, Rect(0,0,800,600));
+		BkGround.Draw(buffer, Rect(0,50,700,550));
 		Table.Draw(buffer, Rect(table_xy,table_xy,table_xy + 200,table_xy+270));
 		
 		//kirobot.AddImage();
@@ -134,6 +136,8 @@ public :
 
 			btnMini.Draw(buffer);
 			btnClose.Draw(buffer);
+			//btnMax.Draw(buffer);
+			//btnBase.Draw(buffer);
 		}
 
 		TCHAR szDebug[200];
@@ -153,22 +157,22 @@ protected :
 	{
 		AddEventHandler(WM_CREATE, &Me::OnCreate);
 		AddEventHandler(WM_DESTROY, &Me::OnDestroy);
-		//AddEventHandler(WM_SYSCOMMAND, &Me::OnSysCommand);
+		AddEventHandler(WM_SYSCOMMAND, &Me::OnSysCommand);
 	}
-	//LRESULT OnSysCommand(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-	//{
-	//	if (SC_MAXIMIZE == wParam)
-	//	{
-	//		::DefWindowProc(hWnd, uMsg, wParam, lParam);
-	//		buffer.Attach(hWnd);
-	//		::GetClientRect(hWnd, &rcClient);
-	//	}
-	//	else
-	//	{
-	//		return ::DefWindowProc(hWnd, uMsg, wParam, lParam);
-	//	}
-	//	return 0;
-	//}
+	LRESULT OnSysCommand(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	{
+		if (SC_MAXIMIZE == wParam)
+		{
+			::DefWindowProc(hWnd, uMsg, wParam, lParam);
+			buffer.Attach(hWnd);
+			::GetClientRect(hWnd, &rcClient);
+		}
+		else
+		{
+			return ::DefWindowProc(hWnd, uMsg, wParam, lParam);
+		}
+		return 0;
+	}
 
 	LRESULT OnCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
@@ -195,16 +199,37 @@ protected :
 		btnMini.SetImageOn(_T("button.bmp"), Rect(50,0,100,50));
 		btnMini.SetImageOff(_T("button.bmp"), Rect(0,0,50,50));
 		btnMini.SetTransparent(RGB(255,0,255));
-		btnMini.SetButtonRect(Rect(800 - 50*2, 0, 800 - 50, 50));
+		btnMini.SetButtonRect(Rect(850-50*3, 0, 850- 50*2, 50));
 		btnMini.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
 
+		//if(SC_MAXIMIZE == wParam)
+	//	{
+	//		btnBase.Attach(hWnd);
+	//		btnBase.SetImageOn(_T("button.bmp"), Rect(250,0,300,50));
+	//		btnBase.SetImageOff(_T("button.bmp"), Rect(200,0,250,50));
+	//		btnBase.SetTransparent(RGB(255,0,255));
+	//		btnBase.SetButtonRect(Rect(850 - 50*2, 0, 850 - 50, 50));
+	//		btnBase.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_SIZE, 0);
+	//	}
+		
+	//	if(SC_MAXIMIZE != wParam)
+	//	{
+	//		btnMax.Attach(hWnd);
+	//		btnMax.SetImageOn(_T("button.bmp"), Rect(250,0,300,50));
+	//		btnMax.SetImageOff(_T("button.bmp"), Rect(200,0,250,50));
+	//		btnMax.SetTransparent(RGB(255,0,255));
+	//		btnMax.SetButtonRect(Rect(850 - 50*2, 0, 850 - 50, 50));
+	//		btnMax.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+	//	}
 
 		btnClose.Attach(hWnd);
 		btnClose.SetImageOn(_T("button.bmp"), Rect(150,0,200,50));
 		btnClose.SetImageOff(_T("button.bmp"), Rect(100,0,150,50));
 		btnClose.SetTransparent(RGB(255,0,255));
-		btnClose.SetButtonRect(Rect(800 - 50, 0, 800, 50));
+		btnClose.SetButtonRect(Rect(850 - 50, 0, 850, 50));
 		btnClose.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_CLOSE, 0);
+
+
 
 		buffer.Attach(hWnd);
 		return 0;
@@ -249,8 +274,11 @@ private :
 	DWORD FPS_frame;
 	DWORD dwFPS;
 
+	//버튼
 	Button btnMini;
 	Button btnClose;
+	Button btnMax;
+	Button btnBase;
 
 	HWND hMainWnd;
 	Point ptPrev;
