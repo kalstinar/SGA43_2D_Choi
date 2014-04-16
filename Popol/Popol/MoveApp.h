@@ -122,8 +122,6 @@ public :
 		//	}
 		//}
 
-		const int table_xy =200;
-		
 		//배경
 		BkGround.Draw(buffer, Rect(0,50,700,550));
 		IGMenu.Draw(buffer, Rect(700,50,850,550));
@@ -131,8 +129,14 @@ public :
 		MakeBG.Draw(buffer, Rect(0,550,850,700));
 		ClockBG.Draw(buffer, Rect(700,550,850,700));
 
-		Table1.Draw(buffer, Rect(250,250,342,370));
-
+		//책상 배치
+		Table.Draw(buffer, Rect(145,160,145+180,160+150));
+		
+		Table1.Draw(buffer, Rect(323,220,323+180,220+150));
+		Table2.Draw(buffer, Rect(220,268,220+180,268+150));
+		Table3.Draw(buffer, Rect(373,240,373+180,240+150));
+		Table4.Draw(buffer, Rect(267,290,267+180,290+150));
+		
 
 		//인게임 버튼
 		btnIGMenu1.Draw(buffer);
@@ -226,11 +230,21 @@ protected :
 		ClockBG.SetTransparent(RGB(255,0,255));
 
 ////////////////////////////////////////////////////////////////////////////
-
 		
-		Table1.load(_T("Table.bmp"), Rect(0,0,93,120));
-		Table1.SetTransparent(RGB(255,0,255));
+		Table.load(_T("Table.bmp"), Rect(0,0,160,150));
+		Table.SetTransparent(RGB(58,59,59));
+		
+		Table1.load(_T("Table.bmp"), Rect(0,0,160,150));
+		Table1.SetTransparent(RGB(58,59,59));
+		
+		Table2.load(_T("Table.bmp"), Rect(0,0,160,150));
+		Table2.SetTransparent(RGB(58,59,59));
 
+		Table3.load(_T("Table.bmp"), Rect(160,0,320,150));
+		Table3.SetTransparent(RGB(58,59,59));
+
+		Table4.load(_T("Table.bmp"), Rect(160,0,320,150));
+		Table4.SetTransparent(RGB(58,59,59));
 
 
 		hMainDC = ::GetDC(hWnd);
@@ -240,7 +254,6 @@ protected :
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //Control Mode 버튼 등록
-
 		btnMini.Attach(hWnd);
 		btnMini.SetImageOn(_T("button.bmp"), Rect(50,0,100,50));
 		btnMini.SetImageOff(_T("button.bmp"), Rect(0,0,50,50));
@@ -279,32 +292,32 @@ protected :
 //인게임 버튼 등록
 
 		btnIGMenu1.Attach(hWnd);
-		btnIGMenu1.SetImageOn(_T("BtnMenu1.bmp"), Rect(0,0,110,50));
-		btnIGMenu1.SetImageOff(_T("BtnMenu1.bmp"), Rect(0,0,110,50));
+		btnIGMenu1.SetImageOn(_T("BtnIGMenu.bmp"), Rect(0,0,110,50));
+		btnIGMenu1.SetImageOff(_T("BtnIGMenu.bmp"), Rect(0,0,110,50));
 		btnIGMenu1.SetButtonRect(Rect(720, 115, 830, 165));
 		btnIGMenu1.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
 
 		btnIGMenu2.Attach(hWnd);
-		btnIGMenu2.SetImageOn(_T("BtnMenu2.bmp"), Rect(0,0,110,50));
-		btnIGMenu2.SetImageOff(_T("BtnMenu2.bmp"), Rect(0,0,110,50));
+		btnIGMenu2.SetImageOn(_T("BtnIGMenu.bmp"), Rect(110,0,220,50));
+		btnIGMenu2.SetImageOff(_T("BtnIGMenu.bmp"), Rect(110,0,220,50));
 		btnIGMenu2.SetButtonRect(Rect(720, 190, 830, 240));
 		btnIGMenu2.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
 
 		btnIGMenu3.Attach(hWnd);
-		btnIGMenu3.SetImageOn(_T("BtnMenu3.bmp"), Rect(0,0,110,50));
-		btnIGMenu3.SetImageOff(_T("BtnMenu3.bmp"), Rect(0,0,110,50));
+		btnIGMenu3.SetImageOn(_T("BtnIGMenu.bmp"), Rect(220,0,330,50));
+		btnIGMenu3.SetImageOff(_T("BtnIGMenu.bmp"), Rect(220,0,330,50));
 		btnIGMenu3.SetButtonRect(Rect(720, 270, 830, 320));
 		btnIGMenu3.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
 
 		btnIGMenu4.Attach(hWnd);
-		btnIGMenu4.SetImageOn(_T("BtnMenu4.bmp"), Rect(0,0,110,50));
-		btnIGMenu4.SetImageOff(_T("BtnMenu4.bmp"), Rect(0,0,110,50));
+		btnIGMenu4.SetImageOn(_T("BtnIGMenu.bmp"), Rect(330,0,440,50));
+		btnIGMenu4.SetImageOff(_T("BtnIGMenu.bmp"), Rect(330,0,440,50));
 		btnIGMenu4.SetButtonRect(Rect(720, 350, 830, 400));
 		btnIGMenu4.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
 
 		btnIGMenu5.Attach(hWnd);
-		btnIGMenu5.SetImageOn(_T("BtnMenu5.bmp"), Rect(0,0,110,50));
-		btnIGMenu5.SetImageOff(_T("BtnMenu5.bmp"), Rect(0,0,110,50));
+		btnIGMenu5.SetImageOn(_T("BtnIGMenu.bmp"), Rect(440,0,550,50));
+		btnIGMenu5.SetImageOff(_T("BtnIGMenu.bmp"), Rect(440,0,550,50));
 		btnIGMenu5.SetButtonRect(Rect(720, 430, 830, 480));
 		btnIGMenu5.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -335,7 +348,12 @@ private :
 	//배경
 	Image BkGround;
 	//책상
+	Image Table;
 	Image Table1;
+	Image Table2;
+	Image Table3;
+	Image Table4;
+
 	//인게임 메뉴
 	Image IGMenu;
 	Image CalendarBG;
