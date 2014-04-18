@@ -11,12 +11,17 @@
 #include "DoubleBuffer.h"
 #include "image.h"
 #include "animation.h"
+#include "ClockApp.h"
 
 ///////////////////////////
 enum msg_id
 {
-	WM_CONTR = WM_USER + 1
+	WM_CHANGMODE = WM_USER + 1
 };
+
+
+
+
 ////////////////////////////
 
 #endif // __SGA_HPP__

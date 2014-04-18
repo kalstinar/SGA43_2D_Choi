@@ -3,6 +3,7 @@
 #include "D:\GitHub\SGA43_2D_Choi\Popol\MainWindow\sga.hpp"
 #include "Input.h"
 #include "button.h"
+#include "Money.h"
 
 class MoveApp : public MainWindow<MoveApp>
 {
@@ -11,17 +12,18 @@ class MoveApp : public MainWindow<MoveApp>
 
 	enum mode_id
 	{
-		INGAME_MODE,
+		INGAME_MODE = WM_USER + 1,
 		CONTROL_MODE,
+		SUBMENU_MODE1,
+		SUBMENU_MODE2,
+		SUBWIN_MODE1,
+		SUBWIN_MODE2	
 	};
 	
-
-
 public :
-	MoveApp()
-		: mode(INGAME_MODE) 
-		, FPS_dt(0), FPS_frame(0)
-		, bGrabWindow(false), hMainWnd(NULL)
+	MoveApp() 
+		 :mode(INGAME_MODE), FPS_dt(0), FPS_frame(0)
+		, bGrabWindow(false), hMainWnd(NULL), theta_t(0.f), theta_m(1.f), theta_y(1.f)
 	//	, dx(0), bg_update_dt(0), bg_update_delay(5)
 	{
 		//SetWindowTitle(_T("Alphablend Sample"));
@@ -42,11 +44,8 @@ public :
 		{
 			btnMini.Update(tick);
 			btnClose.Update(tick);
-			//btnMax.Update(tick);
-			//btnBase.Update(tick);
 			
 			
-
 			if (InputDevice[VK_LBUTTON])
 			{
 				bGrabWindow = true;
@@ -59,12 +58,30 @@ public :
 			ptPrev = ptMouse;
 			ptMouse = InputDevice.getPos();
 		}
+
+		else if (mode == SUBMENU_MODE1)
+		{
+			btnMake.Update(tick);
+			btnClMake.Update(tick);
+		}
+
+//인게임 버튼
 		btnIGMenu1.Update(tick);
 		btnIGMenu2.Update(tick);
 		btnIGMenu3.Update(tick);
 		btnIGMenu4.Update(tick);
 		btnIGMenu5.Update(tick);
+//서브메뉴 버튼
+		btnJob.Update(tick);
+		btnTrain.Update(tick);
+		btnFire.Update(tick);
+//서브윈도우 버튼
+		btnNext.Update(tick);
+		btnPrev.Update(tick);
+		btnOk.Update(tick);
+		btnCancel.Update(tick);
 	}
+
 	void Update(DWORD tick)
 	{
 		// FPS_dt(ms) : FPS_frame = 1000ms : x
@@ -129,14 +146,23 @@ public :
 		MakeBG.Draw(buffer, Rect(0,550,850,700));
 		ClockBG.Draw(buffer, Rect(700,550,850,700));
 
-		//책상 배치
+		//책상&의자 배치
+		Chair.Draw(buffer, Rect(145+15,160+20,145+15+70,160+20+85));
+		CEO.Draw(buffer, Rect(160+15,140+20,160+15+50,140+20+65));
 		Table.Draw(buffer, Rect(145,160,145+180,160+150));
 		
+
+		Chair1.Draw(buffer, Rect(323+15,220+20,323+15+70,220+20+85));
 		Table1.Draw(buffer, Rect(323,220,323+180,220+150));
-		Table2.Draw(buffer, Rect(220,268,220+180,268+150));
-		Table3.Draw(buffer, Rect(373,240,373+180,240+150));
-		Table4.Draw(buffer, Rect(267,290,267+180,290+150));
 		
+		Chair2.Draw(buffer, Rect(220+15,283,220+15+70,268+15+85));
+		Table2.Draw(buffer, Rect(220,268,220+180,268+150));
+		
+		Table3.Draw(buffer, Rect(373,240,373+180,240+150));
+		Chair3.Draw(buffer, Rect(373+78,240+49,373+78+70,240+49+85));
+
+		Table4.Draw(buffer, Rect(267,290,267+180,290+150));
+		Chair4.Draw(buffer, Rect(267+78,290+49,267+78+70,290+49+85));
 
 		//인게임 버튼
 		btnIGMenu1.Draw(buffer);
@@ -146,7 +172,7 @@ public :
 		btnIGMenu5.Draw(buffer);
 
 		
-		
+
 		//kirobot.AddImage();
 		//arabprin.AddImage();
 		
@@ -166,12 +192,40 @@ public :
 
 			btnMini.Draw(buffer);
 			btnClose.Draw(buffer);
-			//btnMax.Draw(buffer);
-			//btnBase.Draw(buffer);
+		}
+		
+		if(mode == SUBMENU_MODE1)
+		{
+			SubMenu.Draw(buffer, Rect(540, 100, 690, 300));
+
+			btnMake.Draw(buffer);
+			btnClMake.Draw(buffer);
+		}
+		
+		if(mode == SUBMENU_MODE2)
+		{
+			SubMenu2.Draw(buffer, Rect(540, 160, 690, 460));
 			
+			btnJob.Draw(buffer);
+			btnTrain.Draw(buffer);
+			btnFire.Draw(buffer);
 		}
 
+		if(mode == SUBWIN_MODE1)
+		{
+			SubWin.Draw(buffer, Rect(100,50,650,500));
+			
+			btnNext.Draw(buffer);
+			btnCancel.Draw(buffer);
+		}
 
+		if(mode == SUBWIN_MODE2)
+		{
+			SubWin.Draw(buffer, Rect(100,50,650,500));
+			
+			btnPrev.Draw(buffer);
+			btnOk.Draw(buffer);
+		}
 
 		TCHAR szDebug[200];
 		_stprintf_s(szDebug, _T("FPS : %08d"), dwFPS);
@@ -179,6 +233,7 @@ public :
 
 		buffer.Draw();
 	}
+
 
 	static void Proxy(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
@@ -191,6 +246,8 @@ protected :
 		AddEventHandler(WM_CREATE, &Me::OnCreate);
 		AddEventHandler(WM_DESTROY, &Me::OnDestroy);
 		//AddEventHandler(WM_SYSCOMMAND, &Me::OnSysCommand);
+		AddEventHandler(WM_TIMER, &Me::OnTimer);		
+		AddEventHandler(WM_CHANGMODE, &Me::ChngMode);
 	}
 
 
@@ -211,10 +268,10 @@ protected :
 
 	LRESULT OnCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
+		::SetTimer(hWnd, 0, 100, NULL);
+		
 		::GetClientRect(hWnd, &rcClient);
 		hMainWnd = hWnd;
-
-		//block.load(_T("block.bmp"));
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -229,11 +286,21 @@ protected :
 		ClockBG.load(_T("Clock.bmp"), Rect(0, 0, 150,150));
 		ClockBG.SetTransparent(RGB(255,0,255));
 
+		
+////////////////////////////////////////////////////////////////////////
+//서브메뉴&서브윈도우 버튼 등록
+		
+		SubMenu.load(_T("SubMenu.bmp"), Rect(0, 0, 150, 200));
+		SubMenu2.load(_T("SubMenu.bmp"), Rect(0, 200, 150, 500));
+		SubWin.load(_T("SubMenu.bmp"), Rect(0, 200, 150,500));
+
+
 ////////////////////////////////////////////////////////////////////////////
 		
+//자리 배정
 		Table.load(_T("Table.bmp"), Rect(0,0,160,150));
 		Table.SetTransparent(RGB(58,59,59));
-		
+
 		Table1.load(_T("Table.bmp"), Rect(0,0,160,150));
 		Table1.SetTransparent(RGB(58,59,59));
 		
@@ -246,6 +313,26 @@ protected :
 		Table4.load(_T("Table.bmp"), Rect(160,0,320,150));
 		Table4.SetTransparent(RGB(58,59,59));
 
+		Chair.load(_T("Chair.bmp"), Rect(64,0,125,75));
+		Chair.SetTransparent(RGB(59,59,59));
+
+		Chair1.load(_T("Chair.bmp"), Rect(64,0,125,75));
+		Chair1.SetTransparent(RGB(59,59,59));
+
+		Chair2.load(_T("Chair.bmp"), Rect(64,0,125,75));
+		Chair2.SetTransparent(RGB(59,59,59));
+
+		Chair3.load(_T("Chair.bmp"), Rect(0,0,64,75));
+		Chair3.SetTransparent(RGB(59,59,59));
+
+		Chair4.load(_T("Chair.bmp"), Rect(0,0,64,75));
+		Chair4.SetTransparent(RGB(59,59,59));
+
+		CEO.load(_T("CEO.bmp"), Rect(0,0,16,21));
+		CEO.SetTransparent(RGB(25,25,25));
+		
+
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 		hMainDC = ::GetDC(hWnd);
 		hBitmapDC = ::CreateCompatibleDC(hMainDC);
@@ -258,7 +345,7 @@ protected :
 		btnMini.SetImageOn(_T("button.bmp"), Rect(50,0,100,50));
 		btnMini.SetImageOff(_T("button.bmp"), Rect(0,0,50,50));
 		btnMini.SetTransparent(RGB(255,0,255));
-		btnMini.SetButtonRect(Rect(850-50*3, 0, 850- 50*2, 50));
+		btnMini.SetButtonRect(Rect(850-50*2, 0, 850- 50, 50));
 		btnMini.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
 
 		//if(SC_MAXIMIZE == wParam)
@@ -295,44 +382,123 @@ protected :
 		btnIGMenu1.SetImageOn(_T("BtnIGMenu.bmp"), Rect(0,0,110,50));
 		btnIGMenu1.SetImageOff(_T("BtnIGMenu.bmp"), Rect(0,0,110,50));
 		btnIGMenu1.SetButtonRect(Rect(720, 115, 830, 165));
-		btnIGMenu1.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+		btnIGMenu1.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
 
 		btnIGMenu2.Attach(hWnd);
 		btnIGMenu2.SetImageOn(_T("BtnIGMenu.bmp"), Rect(110,0,220,50));
 		btnIGMenu2.SetImageOff(_T("BtnIGMenu.bmp"), Rect(110,0,220,50));
 		btnIGMenu2.SetButtonRect(Rect(720, 190, 830, 240));
-		btnIGMenu2.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+		btnIGMenu2.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
 
 		btnIGMenu3.Attach(hWnd);
 		btnIGMenu3.SetImageOn(_T("BtnIGMenu.bmp"), Rect(220,0,330,50));
 		btnIGMenu3.SetImageOff(_T("BtnIGMenu.bmp"), Rect(220,0,330,50));
 		btnIGMenu3.SetButtonRect(Rect(720, 270, 830, 320));
-		btnIGMenu3.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+		btnIGMenu3.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
 
 		btnIGMenu4.Attach(hWnd);
 		btnIGMenu4.SetImageOn(_T("BtnIGMenu.bmp"), Rect(330,0,440,50));
 		btnIGMenu4.SetImageOff(_T("BtnIGMenu.bmp"), Rect(330,0,440,50));
 		btnIGMenu4.SetButtonRect(Rect(720, 350, 830, 400));
-		btnIGMenu4.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+		btnIGMenu4.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
 
 		btnIGMenu5.Attach(hWnd);
 		btnIGMenu5.SetImageOn(_T("BtnIGMenu.bmp"), Rect(440,0,550,50));
 		btnIGMenu5.SetImageOff(_T("BtnIGMenu.bmp"), Rect(440,0,550,50));
 		btnIGMenu5.SetButtonRect(Rect(720, 430, 830, 480));
-		btnIGMenu5.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+		btnIGMenu5.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
+		
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+//서브메뉴 버튼 등록
+		//1
+		btnMake.Attach(hWnd);
+		btnMake.SetImageOn(_T("BtnSubMenu.bmp"), Rect(0,50,110,100));
+		btnMake.SetImageOff(_T("BtnSubMenu.bmp"), Rect(0,50,110,100));
+		btnMake.SetButtonRect(Rect(560, 130, 670, 180));
+		btnMake.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
+		
+		btnClMake.Attach(hWnd);
+		btnClMake.SetImageOn(_T("BtnSubMenu.bmp"), Rect(0,100,110,150));
+		btnClMake.SetImageOff(_T("BtnSubMenu.bmp"), Rect(0,100,110,150));
+		btnClMake.SetButtonRect(Rect(560, 200, 670, 250));
+		btnClMake.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
+
+		//2
+		btnJob.Attach(hWnd);
+		btnJob.SetImageOn(_T("BtnSubMenu.bmp"), Rect(0,150,110,200));
+		btnJob.SetImageOff(_T("BtnSubMenu.bmp"), Rect(0,150,110,200));
+		btnJob.SetButtonRect(Rect(560, 200, 670, 250));
+		btnJob.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
+		
+		btnTrain.Attach(hWnd);
+		btnTrain.SetImageOn(_T("BtnSubMenu.bmp"), Rect(0,200,110,250));
+		btnTrain.SetImageOff(_T("BtnSubMenu.bmp"), Rect(0,200,110,250));
+		btnTrain.SetButtonRect(Rect(560, 270, 670, 320));
+		btnTrain.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
+
+		btnFire.Attach(hWnd);
+		btnFire.SetImageOn(_T("BtnSubMenu.bmp"), Rect(0,0,110,50));
+		btnFire.SetImageOff(_T("BtnSubMenu.bmp"), Rect(0,0,110,50));
+		btnFire.SetButtonRect(Rect(560, 340, 670, 390));
+		btnFire.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		btnPrev.Attach(hWnd);
+		btnPrev.SetImageOn(_T("BtnSubWin.bmp"), Rect(0,0,110,50));
+		btnPrev.SetImageOff(_T("BtnSubWin.bmp"), Rect(0,0,110,50));
+		btnPrev.SetButtonRect(Rect(560, 340, 670, 390));
+		btnPrev.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
+		
+		btnNext.Attach(hWnd);
+		btnNext.SetImageOn(_T("BtnSubWin.bmp"), Rect(110,0,220,50));
+		btnNext.SetImageOff(_T("BtnSubWin.bmp"), Rect(110,0,220,50));
+		btnNext.SetButtonRect(Rect(560, 340, 670, 390));
+		btnNext.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
+
+		btnOk.Attach(hWnd);
+		btnOk.SetImageOn(_T("BtnSubWin.bmp"), Rect(220,0,330,50));
+		btnOk.SetImageOff(_T("BtnSubWin.bmp"), Rect(220,0,330,50));
+		btnOk.SetButtonRect(Rect(560, 340, 670, 390));
+		btnOk.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
+
+		btnCancel.Attach(hWnd);
+		btnCancel.SetImageOn(_T("BtnSubWin.bmp"), Rect(330,0,440,50));
+		btnCancel.SetImageOff(_T("BtnSubWin.bmp"), Rect(330,0,440,50));
+		btnCancel.SetButtonRect(Rect(560, 340, 670, 390));
+		btnCancel.SetAction(&MoveApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		buffer.Attach(hWnd);
 		return 0;
 	}
+
+	LRESULT OnTimer(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	{
+		
+		return 0;
+	}
+
+	LRESULT ChngMode(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	{
+		//인게임 메뉴
+		
+
+		return 0;
+	}
+
 	LRESULT OnDestroy(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		gray.release();
 		::DeleteDC(hBitmapDC);
 		::ReleaseDC(hWnd, hMainDC);
 
+		::KillTimer(hWnd, 0);
 		::PostQuitMessage(0);
 		return 0;
+
+		
 	}
 
 private :
@@ -344,7 +510,8 @@ private :
 	Image gray;
 	
 /////////////////////////////////////////////////////////////////////////////////////////////////	
-	
+	int mode;
+
 	//배경
 	Image BkGround;
 	//책상
@@ -354,18 +521,36 @@ private :
 	Image Table3;
 	Image Table4;
 
+	//의자
+	Image Chair;
+	Image Chair1;
+	Image Chair2;
+	Image Chair3;
+	Image Chair4;
+
 	//인게임 메뉴
 	Image IGMenu;
 	Image CalendarBG;
 	Image MakeBG;
 	Image ClockBG;
 
+	//서브메뉴창
+	Image SubMenu;
+	Image SubMenu2;
+	Button btnMake;
+	Button btnClMake;
+	Button btnJob;
+	Button btnTrain;
+	Button btnFire;
+
+	//보조창
+	Image SubWin;
+	Button btnNext;
+	Button btnPrev;
+	Button btnOk;
+	Button btnCancel;
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-	//Image block;
-
-	int mode;
 
 	// FPS 출력용도.
 	// FPS : Frame Per Second.
@@ -378,8 +563,6 @@ private :
 
 	//버튼
 	Button btnMini;
-	//Button btnMax;
-	//Button btnBase;
 	Button btnClose;
 
 	//인게임 메뉴 버튼
@@ -394,9 +577,16 @@ private :
 	Point ptMouse;
 	bool bGrabWindow;
 
-	//애니메이션 변수 설정
+	//인물&애니메이션 변수 설정
+	Image CEO;
+	
 	Animation kirobot;
 	Animation arabprin;
+
+	//시간 설정
+	float theta_t;
+	float theta_m;
+	float theta_y;
 
 	//////////////////////////
 	// moving background...

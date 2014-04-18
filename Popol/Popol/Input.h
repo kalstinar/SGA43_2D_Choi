@@ -4,6 +4,7 @@
 #include <bitset>
 #include <windowsx.h>
 
+
 class InputProcessor : public singleton<InputProcessor>
 {
 	friend class singleton<InputProcessor>;
@@ -41,6 +42,7 @@ public :
 		return ptMouse;
 	}
 
+
 private :
 	void _check()
 	{
@@ -64,6 +66,8 @@ private :
 	std::bitset<count> _OnClick;
 
 	Point ptMouse;
+	
+
 };
 
 #define InputDevice InputProcessor::getReference()
