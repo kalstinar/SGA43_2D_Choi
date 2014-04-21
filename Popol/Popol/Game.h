@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include "D:\GitHub\SGA43_2D_Choi\Popol\MainWindow\sga.hpp"
+#include "Money.h"
+#include "Char.h"
 
 class Game
 {
@@ -86,11 +88,32 @@ public:
 //작업 비용
 	int GameMakeSpend()
 	{
+		return G_Spend;
+	}
+
+	int GameResultMoney()
+	{
+		if(T_Result == 9)
+		{
 			
+			return G_RMoney;
+		}
+		
+		if(T_Result == 10)
+		{
+			return G_RMoney;
+		}
+
+		if(T_Result == 11)
+		{
+			return G_RMoney;
+		}
 	}
 
 private:
 	int G_Struct;
 	int G_Genre;
 	int T_Result;
+	int G_Spend;
+	int G_RMoney;
 };

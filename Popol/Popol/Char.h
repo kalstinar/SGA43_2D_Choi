@@ -22,13 +22,15 @@ class Char
 public:
 
 	Char()
-		:skill(Programmer), job(pgrm), BasicSalery(500), pgrmJobLV(1),illerJobLV(1),writerJobLV(1),soundJobLV(1)
+		:skill(Programmer), job(pgrm), BasicSalery(500), pgrmJobLV(1),illerJobLV(1),writerJobLV(1),soundJobLV(1), Cname("재벌왕최재벌")
 	{
 		Salery = BasicSalery;
+		
 	}
 
 	~Char()
 	{
+
 	}
 
 ///////////////////////////////////////////////////////////////////////
@@ -43,6 +45,11 @@ public:
 		{
 			
 		}
+	}
+
+	char CEOname()
+	{
+		return Cname[64]; 
 	}
 
 /////////////////////////////////////////////////////////////////////
@@ -94,5 +101,10 @@ private:
 	int soundJobLV;
 	int writerJobLV;
 
+	int Pskill; //프로그래밍 능력
+	int Iskill;	//일러스트 능력
+	int Wskill;	//작가 능력
+	int Sskill;	//사운드 능력
 
+	char Cname[64];
 };

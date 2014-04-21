@@ -16,7 +16,7 @@
 ///////////////////////////
 enum msg_id
 {
-	WM_CHANGMODE = WM_USER + 1
+	WM_CHANGEMODE = WM_USER + 1
 };
 
 

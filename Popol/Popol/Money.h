@@ -29,7 +29,7 @@ public:
 
 	int CurrentMoney()
 	{
-		CMoney = (BMoney + (GamePrice * GameSell)) - (MoneySpend + SumPay);
+		//CMoney = (BMoney + (GamePrice * GameSell)) - (MoneySpend + SumPay);
 		return CMoney;
 	}
 
