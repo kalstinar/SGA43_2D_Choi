@@ -39,6 +39,9 @@ Point3 Point1.bmp 0,50,60,100 1 f6f6f6 0
 Point4 Point1.bmp 0,100,60,150 1 f6f6f6 0
 Point5 Point1.bmp 0,150,60,200 1 f6f6f6 0
 Programmer Programmer.bmp 0,0,60,100 1 160a07 0
+Writer Progrmmer.bmp 60,0,120,100 1 160a07 0
+Artist Progrmmer.bmp 120,0,180,100 1 160a07 0
+SD Progrmmer.bmp 180,0,240,100 1 160a07 0
 Job1 Job.bmp 0,0,50,50 1 1f2727 0
 Job2 Job.bmp 0,50,50,100 1 1f2727 0
 Job3 Job.bmp 0,100,50,150 1 1f2727 0

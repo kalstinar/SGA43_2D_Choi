@@ -15,6 +15,7 @@
 #include "input.h"
 #include "Manager.hpp"
 #include <time.h>
+#include <string>
 
 
 #endif // __SGA_HPP__
@@ -93,7 +94,15 @@ enum skill_id //CEO직업
 enum job_id //직원 직업
 {	
 	pgrm = 410,
+	writer,
 	iller,
-	sound,
-	writer
+	sound
+};
+
+enum person_id
+{
+	P1 = 420,
+	P2,
+	P3,
+	P4
 };

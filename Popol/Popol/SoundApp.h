@@ -4,6 +4,8 @@
 #include "Sound.h"
 #include "LoadResource.h"
 #include "GameProgress.h"
+#include "CharData.h"
+
 
 class SoundApp : public MainWindow<SoundApp>
 {
@@ -18,8 +20,10 @@ class SoundApp : public MainWindow<SoundApp>
 
 public :
 	SoundApp()
-		: mode(MAIN_MODE1), gStruct(Simulation), gGenre(Baseball), tResult(Good) 
+		: mode(MAIN_MODE1), gStruct(Simulation), gGenre(Baseball), tResult(Good)
+		,job(pgrm), person(P1) 
 		,GmProg(false), GmProg2(false), GmProg3(false)
+		, GmProg4(false), GmProg5(false), GmProg6(false)
 		, FPS_dt(0), FPS_frame(0)
 		, bGrabWindow(false), hMainWnd(NULL)
 		, dx(0), bg_update_dt(0), bg_update_delay(5)
@@ -42,6 +46,11 @@ public :
 		GmProg = false;
 		GmProg2 = false;
 		GmProg3 = false;
+		GmProg4 = false;
+		GmProg5 = false;
+		GmProg6 = false;
+		person =P1;
+		job = pgrm;
 	}
 
 	void Input(DWORD tick)
@@ -154,12 +163,6 @@ public :
 					btnOk2.Update(tick);
 			}
 		}
-
-	
-		
-
-
-
 
 //기타 버튼
 		
@@ -448,8 +451,11 @@ public :
 			{
 				btnCancel.Draw(buffer);
 
-				ImageDepot["SubWin4"]->Move(Rect(50,75,650,525));
+				ImageDepot["SubWin4"]->Move(Rect(70,130,630,430));
 				ImageDepot["SubWin4"]->Draw(buffer);
+
+				ImageDepot["White"]->Move(Rect(50,75,650,525));
+				ImageDepot["White"]->Draw(buffer);
 
 				ImageDepot["MenuText4"]->Move(Rect(270, 453, 430, 513));
 				ImageDepot["MenuText4"]->Draw(buffer);
@@ -533,12 +539,46 @@ public :
 
 				ImageDepot["MenuText1"]->Move(Rect(430, 370, 580, 430));
 				ImageDepot["MenuText1"]->Draw(buffer);
+				
+				switch(person)
+				{
+				case P1:
+					ImageDepot["Programmer"]->Move(Rect(180,185,240,365));
+					ImageDepot["Programmer"]->Draw(buffer);
+					break;
+				case P2:
+					ImageDepot["Writer"]->Move(Rect(180,185,240,365));
+					ImageDepot["Writer"]->Draw(buffer);
+					break;
+				case P3:
+					ImageDepot["Artist"]->Move(Rect(180,185,240,365));
+					ImageDepot["Artist"]->Draw(buffer);
+					break;
+				case P4:
+					ImageDepot["SD"]->Move(Rect(180,185,240,365));
+					ImageDepot["SD"]->Draw(buffer);
+					break;
+				}
 
-				ImageDepot["Programmer"]->Move(Rect(180,185,240,365));
-				ImageDepot["Programmer"]->Draw(buffer);
-
-				ImageDepot["Job1"]->Move(Rect(120,215,230,385));
-				ImageDepot["Job1"]->Draw(buffer);
+				switch(job)
+				{
+				case pgrm:
+					ImageDepot["Job1"]->Move(Rect(120,215,230,385));
+					ImageDepot["Job1"]->Draw(buffer);
+					break;
+				case writer:
+					ImageDepot["Job2"]->Move(Rect(120,215,230,385));
+					ImageDepot["Job2"]->Draw(buffer);
+					break;
+				case iller:
+					ImageDepot["Job3"]->Move(Rect(120,215,230,385));
+					ImageDepot["Job3"]->Draw(buffer);
+					break;
+				case sound:
+					ImageDepot["Job4"]->Move(Rect(120,215,230,385));
+					ImageDepot["Job4"]->Draw(buffer);
+					break;
+				}
 			}
 			else if(GmProg == true)
 			{
@@ -634,8 +674,6 @@ protected :
 		//SoundDepot["bgSound"]->Play();
 
 		Loader();
-
-
 
 		::GetClientRect(hWnd, &rcClient);
 		hMainWnd = hWnd;
@@ -833,15 +871,20 @@ protected :
 		btnOk2.SetAction(&SoundApp::Proxy, hWnd, WM_CHANGEMODE, INGAME_MODE, 0);
 		
 //INGAME_MODE - MAKE
+		//1
 		btnGameProg.Attach(hWnd);
 		btnGameProg.SetImageOn(_T("BtnGS.bmp"), Rect(0,180,800,550));
 		btnGameProg.SetImageOff(_T("BtnGS.bmp"), Rect(0,330,800,550));
 		btnGameProg.SetButtonRect(Rect(0, 550, 850, 700));
 		btnGameProg.SetAction(&SoundApp::Proxy, hWnd, WM_CHANGEMODE, MAKEMN_MODE, 0);
+		//2
+		btnOk3.
 
 		buffer.Attach(hWnd);
 		return 0;
 	}
+
+
 	
 //모드체인지
 	LRESULT ChngMode(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -932,10 +975,19 @@ private :
 	int mode;
 	int gGenre;
 	int gStruct;
-	int tResult;
+	int tResult; 
+	int job; //직업번호
+	int person;//직원번호
+
 	bool GmProg; //중간 진행 애니메이션 로드
 	bool GmProg2; //진행상황 세부 버튼
 	bool GmProg3; //시작
+	bool GmProg4; //미술
+	bool GmProg5; //음악
+	bool GmProg6; //1~5를 전부 다시 false로
+
+
+	
 
 	GameProgress GMPS;
 
@@ -1013,6 +1065,10 @@ private :
 	Button btnNext4; //MAKE3
 	Button btnOk; //MAKE3-2
 	Button btnOk2; //MAKE3-3
+	Button btnOk3; //미술->
+	Button btnOk4; //음악->
+	Button btnOk5; //버그체크->
+	Button btnOk6; //모두 false로 초기화!
 	Button btnCancel;
 	
 

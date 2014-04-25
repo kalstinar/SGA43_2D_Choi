@@ -81,6 +81,7 @@
   <ItemGroup>
     <ClInclude Include="button.h" />
     <ClInclude Include="Char.h" />
+    <ClInclude Include="CharData.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameProgress.h" />
     <ClInclude Include="Input.h" />
