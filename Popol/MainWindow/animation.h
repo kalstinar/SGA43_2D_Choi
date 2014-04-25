@@ -2,6 +2,7 @@
 
 #include "image.h"
 #include <vector>
+#include "Manager.hpp"
 
 class Animation
 {
@@ -74,14 +75,16 @@ public :
 	{
 		if (bDoNotDraw) return;
 
-		shotlist[index]->Draw(hdc, rc);
+		shotlist[index]->Move(rc);
+		shotlist[index]->Draw(hdc);
 	}
 	void Draw(HDC hdc)
 	{
 		if (bDoNotDraw) return;
 
 		rcImage = Rect(ptDraw, Size(rcImage.width(), rcImage.height()));
-		shotlist[index]->Draw(hdc, rcImage);
+		shotlist[index]->Move(rcImage);
+		shotlist[index]->Draw(hdc);
 	}
 	void SetTransparent(COLORREF clr)
 	{
@@ -104,3 +107,10 @@ private :
 	Rect rcImage;
 
 };
+
+
+class AnimationManager : public Manager<Animation>, public singleton<AnimationManager>
+{
+};
+
+#define AnimationDepot AnimationManager::getReference()

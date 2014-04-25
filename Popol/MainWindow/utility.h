@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <windows.h>
+
 // 동적 할당한 포인터를 해제할 때 사용.
 template<typename T>
 void SafeDelete(T& pointer)
@@ -112,4 +114,18 @@ template<typename T>
 T Select(HDC hdc, T GDI_Object)
 {
 	return T(::SelectObject(hdc, GDI_Object));
+}
+
+// 16진수를 뜻하는 문자를 숫자로 변환하여 반환.
+template<typename T>
+int c2d(const T c)
+{
+	if (c >= '0' && c <= '9')
+		return int(c-'0');
+	else if (c >= 'a' && c <= 'f')
+		return int(c-'a' + 10);
+	else if (c >= 'A' && c <= 'F')
+		return int(c-'A' + 10);
+
+	return 0;
 }

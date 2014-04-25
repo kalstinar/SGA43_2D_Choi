@@ -1,13 +1,15 @@
-﻿#include "MoveApp.h"
+﻿#include "SoundApp.h"
 
 INT
 WINAPI
 _tWinMain(HINSTANCE hInst,
 		  HINSTANCE, LPTSTR, INT)
 {
-	MoveApp app;
+	SoundApp app;
 
 	app.Setup(hInst);
+
+	srand((unsigned int)time(NULL));
 
 	MSG msg;
 

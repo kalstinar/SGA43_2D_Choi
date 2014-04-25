@@ -5,32 +5,18 @@
 
 class Char
 {
-	enum skill_id
-	{
-		Programmer = 1,
-		Designer
-	};
-
-	enum job_id
-	{
-		pgrm = 5,
-		iller,
-		sound,
-		writer
-	};
+	
 
 public:
 
 	Char()
 		:skill(Programmer), job(pgrm), BasicSalery(500), pgrmJobLV(1),illerJobLV(1),writerJobLV(1),soundJobLV(1), Cname("재벌왕최재벌")
 	{
-		Salery = BasicSalery;
-		
 	}
 
 	~Char()
 	{
-
+		Salery = BasicSalery;
 	}
 
 ///////////////////////////////////////////////////////////////////////
@@ -39,7 +25,7 @@ public:
 	{
 		if(skill == Programmer)
 		{	
-			
+			Pskill * 1.2;
 		}
 		else if(skill == Designer)
 		{
@@ -58,19 +44,31 @@ public:
 	{
 		if(job == pgrm)
 		{
-			
+			Pskill = 40+(rand()%40);
+			Iskill = 5+(rand()%5);;
+			Wskill = 5+(rand()%5);;
+			Sskill = 10+(rand()%10);;
 		}
 		else if(job == iller)
 		{
-		
+			Pskill = 5+(rand()%5);
+			Iskill = 35+(rand()%35);
+			Wskill = 10+(rand()%10);
+			Sskill = 10+(rand()%10);
 		}
 		else if(job == sound)
 		{
-		
+			Pskill = 5+(rand()%5);
+			Iskill = 5+(rand()%5);
+			Wskill = 5+(rand()%5);
+			Sskill = 45+(rand()%45);
 		}
 		else if(job = writer)
 		{
-			
+			Pskill = 5+(rand()%5);
+			Iskill = 5+(rand()%5);
+			Wskill = 40+(rand()%40);
+			Sskill = 10+(rand()%10);
 		}
 	}
 

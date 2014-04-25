@@ -70,6 +70,13 @@ struct Rect : public RECT
 		right = left + s.cx;
 		bottom = top + s.cy;
 	}
+	Rect(const Point& lt, const LONG& w, const LONG& h)
+	{
+		left = lt.x;
+		top = lt.y;
+		right = left + w;
+		bottom = top + h;
+	}
 	Rect(const Point& lt, const Point& rb)
 	{
 		left = lt.x;
@@ -141,3 +148,78 @@ struct Rect : public RECT
 	}
 };
 
+template<typename T, int Row, int Col>
+struct Matrix
+{
+	typedef Matrix<T,Row,Col> Me;
+
+	Matrix()
+	{
+		for (int i = 0; i < Row; i++)
+		{
+			for (int j = 0; j < Col; j++)
+			{
+				m[i][j] = T(0);
+			}
+		}
+	}
+	Me& LoadIdentity(void)
+	{
+		if (Row != Col) return *this;
+
+		for (int i = 0; i < Row; i++)
+		{
+			for (int j = 0; j < Col; j++)
+			{
+				if (i == j)
+					m[i][j] = T(1);
+				else
+					m[i][j] = T(0);
+			}
+		}
+		return *this;
+	}
+
+	Me operator + (const Me& other)
+	{
+		Me tmp(*this);
+		for (int i = 0; i < Row; i++)
+		{
+			for (int j = 0; j < Col; j++)
+			{
+				m[i][j] += other.m[i][j];
+			}
+		}
+		return tmp;
+	}
+	Me operator - (const Me& other)
+	{
+		Me tmp(*this);
+		for (int i = 0; i < Row; i++)
+		{
+			for (int j = 0; j < Col; j++)
+			{
+				m[i][j] -= other.m[i][j];
+			}
+		}
+		return tmp;
+	}
+	template<int Col2>
+	Matrix<T,Row,Col2> operator * (const Matrix<T,Col,Col2>& obj)
+	{
+		Matrix<T,Row,Col2> tmp;
+		for (int i = 0; i < Row; i++)
+		{
+			for (int j = 0; j < Col2; j++)
+			{
+				for (int k = 0; k < Col; k++)
+				{
+					tmp.m[i][j] += this->m[i][k] * obj.m[k][j];
+				}
+			}
+		}
+		
+		return tmp;
+	}
+	T m[Row][Col];
+};

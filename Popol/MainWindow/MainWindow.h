@@ -65,7 +65,7 @@ public :
 			((lpszWindowTitle)? lpszWindowTitle : _T("sample")),
 			dwStyle,
 			400,
-			80,
+			100,
 			width,
 			height,
 			0,

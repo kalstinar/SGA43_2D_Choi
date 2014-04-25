@@ -18,15 +18,18 @@
     <ClCompile Include="winmain.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="LoadResource.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="button.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveApp.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Money.h">
@@ -36,6 +39,18 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadResource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundApp.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameProgress.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

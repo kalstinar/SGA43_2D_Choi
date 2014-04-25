@@ -74,15 +74,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LoadResource.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="button.h" />
     <ClInclude Include="Char.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameProgress.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="LoadResource.h" />
     <ClInclude Include="Money.h" />
-    <ClInclude Include="MoveApp.h" />
+    <ClInclude Include="Sound.h" />
+    <ClInclude Include="SoundApp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

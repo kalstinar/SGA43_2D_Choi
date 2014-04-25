@@ -10,26 +10,26 @@ class MoveApp : public MainWindow<MoveApp>
 	typedef MoveApp Me;
 	typedef MainWindow<MoveApp> Base;
 
-	enum mode_id
-	{
-		MAIN_MODE1,	//메인메뉴
-		//MAIN_MODE2, //새 게임->회사이름, 사장직업 선택 ->생략 자동 지정되게
-		//MAIN_MODE3, //로드 -> 이 것도 생략
-		INGAME_MODE, //인게임
-		CONTROL_MODE, //컨트롤
-		SUBMENU_MODE1,
-		SUBMENU_MODE2,
-		MARKET_MODE,	//상점
-		INFO_MODE,	//정보	
-		MAKEMN_MODE,
-		MAKE_MODE1,	//제작1(대장르)
-		MAKE_MODE2,	//제작2(소장르)
-		MAKE_MODE3,	//제작3(기본 설정)
-		MAKE_MODE4,	//제작4(미술)
-		MAKE_MODE5,	//제작5(음악)
-		MAKE_MODE6,	//제작6(출시)
-		MAKE_MODE7	//제작7(진행과정)
-	};
+	//enum mode_id
+	//{
+	//	MAIN_MODE1,	//메인메뉴
+	//	//MAIN_MODE2, //새 게임->회사이름, 사장직업 선택 ->생략 자동 지정되게
+	//	//MAIN_MODE3, //로드 -> 이 것도 생략
+	//	INGAME_MODE, //인게임
+	//	CONTROL_MODE, //컨트롤
+	//	SUBMENU_MODE1,
+	//	SUBMENU_MODE2,
+	//	MARKET_MODE,	//상점
+	//	INFO_MODE,	//정보	
+	//	MAKEMN_MODE,
+	//	MAKE_MODE1,	//제작1(대장르)
+	//	MAKE_MODE2,	//제작2(소장르)
+	//	MAKE_MODE3,	//제작3(기본 설정)
+	//	MAKE_MODE4,	//제작4(미술)
+	//	MAKE_MODE5,	//제작5(음악)
+	//	MAKE_MODE6,	//제작6(출시)
+	//	MAKE_MODE7	//제작7(진행과정)
+	//};
 	
 public :
 	MoveApp() 
@@ -390,7 +390,7 @@ protected :
 
 		IGMenu.load(_T("IGMenu.bmp"), Rect(0, 0, 800,600));
 
-		CalendarBG.load(_T("CalendarBG.bmp"), Rect(0, 0, 800,600));
+		CalendarBG.load(_T("CalendarBG.bmp"), Rect(0, 0, 800,50));
 		MakeBG.load(_T("MakeBG.bmp"), Rect(0, 0, 800,600));
 		ClockBG.load(_T("Clock.bmp"), Rect(0, 0, 150,150));
 		ClockBG.SetTransparent(RGB(255,0,255));
@@ -596,11 +596,11 @@ protected :
 		btnPrev1.SetButtonRect(Rect(130, 440, 240, 490));
 		btnPrev1.SetAction(&MoveApp::Proxy, hWnd, WM_CHANGEMODE, INGAME_MODE, 0);
 		
-		//btnNext1.Attach(hWnd);
-		//btnNext1.SetImageOn(_T("BtnSubWin.bmp"), Rect(0,50,110,100));
-		//btnNext1.SetImageOff(_T("BtnSubWin.bmp"), Rect(0,50,110,100));
-		//btnNext1.SetButtonRect(Rect(460, 440, 570, 490));
-		//btnNext1.SetAction(&MoveApp::Proxy, hWnd, WM_CHANGEMODE, MAKE_MODE2, 0);
+		btnNext1.Attach(hWnd);
+		btnNext1.SetImageOn(_T("BtnSubWin.bmp"), Rect(0,50,110,100));
+		btnNext1.SetImageOff(_T("BtnSubWin.bmp"), Rect(0,50,110,100));
+		btnNext1.SetButtonRect(Rect(460, 440, 570, 490));
+		btnNext1.SetAction(&MoveApp::Proxy, hWnd, WM_CHANGEMODE, MAKE_MODE2, 0);
 		
 		btnPrev2.Attach(hWnd);
 		btnPrev2.SetImageOn(_T("BtnSubWin.bmp"), Rect(0,0,110,50));
@@ -608,18 +608,17 @@ protected :
 		btnPrev2.SetButtonRect(Rect(130, 440, 240, 490));
 		btnPrev2.SetAction(&MoveApp::Proxy, hWnd, WM_CHANGEMODE, MAKE_MODE2, 0);
 		
-		//btnNext2.Attach(hWnd);
-		//btnNext2.SetImageOn(_T("BtnSubWin.bmp"), Rect(0,50,110,100));
-		//btnNext2.SetImageOff(_T("BtnSubWin.bmp"), Rect(0,50,110,100));
-		//btnNext2.SetButtonRect(Rect(460, 440, 570, 490));
-		//btnNext2.SetAction(&MoveApp::Proxy, hWnd, WM_CHANGEMODE, MAKE_MODE3, 0);
+		btnNext2.Attach(hWnd);
+		btnNext2.SetImageOn(_T("BtnSubWin.bmp"), Rect(0,50,110,100));
+		btnNext2.SetImageOff(_T("BtnSubWin.bmp"), Rect(0,50,110,100));
+		btnNext2.SetButtonRect(Rect(460, 440, 570, 490));
+		btnNext2.SetAction(&MoveApp::Proxy, hWnd, WM_CHANGEMODE, MAKE_MODE3, 0);
 
 		btnOk.Attach(hWnd);
 		btnOk.SetImageOn(_T("BtnSubWin.bmp"), Rect(0,100,110,150));
 		btnOk.SetImageOff(_T("BtnSubWin.bmp"), Rect(0,100,110,150));
 		btnOk.SetButtonRect(Rect(130, 440, 240, 490));
 		btnOk.SetAction(&MoveApp::Proxy, hWnd, WM_CHANGEMODE, MAKE_MODE7, 0);
-
 		btnCancel.Attach(hWnd);
 		btnCancel.SetImageOn(_T("BtnSubWin.bmp"), Rect(0,150,110,200));
 		btnCancel.SetImageOff(_T("BtnSubWin.bmp"), Rect(0,150,110,200));

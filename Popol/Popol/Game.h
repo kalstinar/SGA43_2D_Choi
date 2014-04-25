@@ -7,28 +7,28 @@
 class Game
 {
 
-	//게임 장르들
-	enum Game_Struct
-	{
-		Simulation = 1,
-		RolePlaying,
-		Action,
-		Sport
-	};
-	enum Game_Genre
-	{
-		Baseball = 5,
-		Strategy,
-		Gun,
-		Fantasy
-	};
+	////게임 장르들
+	//enum Game_Struct
+	//{
+	//	Simulation = 1,
+	//	RolePlaying,
+	//	Action,
+	//	Sport
+	//};
+	//enum Game_Genre
+	//{
+	//	Baseball = 5,
+	//	Strategy,
+	//	Gun,
+	//	Fantasy
+	//};
 
-	enum Task_Result
-	{
-		Good = 9,
-		Nomal,
-		Bad
-	};
+	//enum Task_Result
+	//{
+	//	Good = 9,
+	//	Nomal,
+	//	Bad
+	//};
 
 public:
 	Game()
@@ -42,47 +42,47 @@ public:
 //작업의 결과 예정 산출
 	int GoodTask(int gStruct, int gGenre)
 	{
-		if(G_Struct == 1 && G_Genre == 6)
+		if(G_Struct == Simulation && G_Genre == Strategy)
 		{
-			T_Result = 9;
+			T_Result = Good;
 		}
 		
-		if(G_Struct == 2 && G_Genre == 8)
+		if(G_Struct == RolePlaying && G_Genre == Fantasy)
 		{
-			T_Result = 9;
+			T_Result = Good;
 		}
 
-		if(G_Struct == 3 && G_Genre == 7)
+		if(G_Struct == Action && G_Genre == Gun)
 		{
-			T_Result = 9;
+			T_Result = Good;
 		}
 
-		if(G_Struct == 4 && G_Genre == 5)
+		if(G_Struct == Sport && G_Genre == Baseball)
 		{
-			T_Result = 9;
+			T_Result = Good;
 		}
 
-		if(G_Struct == 1 && G_Genre == 8)
+		if(G_Struct == Simulation && G_Genre == Fantasy)
 		{
-			T_Result = 11;
+			T_Result = Bad;
 		}
 
-		if(G_Struct == 2 && G_Genre == 5)
+		if(G_Struct == RolePlaying && G_Genre == Baseball)
 		{
-			T_Result = 11;
+			T_Result = Bad;
 		}
 
-		if(G_Struct == 3 && G_Genre == 6)
+		if(G_Struct == Action && G_Genre == Strategy)
 		{
-			T_Result = 11;
+			T_Result = Bad;
 		}
 
-		if(G_Struct == 4 && G_Genre == 7)
+		if(G_Struct == Sport && G_Genre == Gun)
 		{
-			T_Result = 11;
+			T_Result = Bad;
 		}
 
-		else T_Result = 10;
+		else T_Result = Normal;
 	}
 
 //작업 비용
@@ -93,18 +93,18 @@ public:
 
 	int GameResultMoney()
 	{
-		if(T_Result == 9)
+		if(T_Result == Good)
 		{
 			
 			return G_RMoney;
 		}
 		
-		if(T_Result == 10)
+		if(T_Result == Normal)
 		{
 			return G_RMoney;
 		}
 
-		if(T_Result == 11)
+		if(T_Result == Bad)
 		{
 			return G_RMoney;
 		}

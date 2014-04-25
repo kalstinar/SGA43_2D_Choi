@@ -189,6 +189,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\button.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ClockApp.h"
 				>
 			</File>
@@ -201,7 +205,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Input.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MainWindow.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Manager.hpp"
 				>
 			</File>
 			<File
