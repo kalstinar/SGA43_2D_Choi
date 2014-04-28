@@ -80,8 +80,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="button.h" />
-    <ClInclude Include="Char.h" />
-    <ClInclude Include="CharData.h" />
+    <ClInclude Include="Char.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="CharData.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameProgress.h" />
     <ClInclude Include="Input.h" />

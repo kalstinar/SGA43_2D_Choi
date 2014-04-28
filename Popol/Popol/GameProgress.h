@@ -17,6 +17,25 @@ public:
 
 	void Efficiency()
 	{
+		if(tR == Good)
+		{
+			
+		}
+		else if(tR == Normal)
+		{
+		
+		}
+		else if(tR == Bad)
+		{
+		
+		}
+	}
+	void Score()
+	{
 		
 	}
+
+private:
+	int gstat;
+	int tR;
 };

@@ -3,7 +3,7 @@
 #include "D:\GitHub\SGA43_2D_Choi\Popol\MainWindow\sga.hpp"
 
 
-struct CharInfo
+/*struct CharInfo
 {
 	std::string Name;
 	int Job;
@@ -18,7 +18,7 @@ struct CharInfo
 	int wrtLV;
 	int illerLV;
 	int soundLV;
-};
+};*/
 
 class Char
 {
@@ -27,6 +27,7 @@ public:
 
 	Char()
 		:skill(Programmer), job(pgrm), BasicSalery(500)
+		//, pgrmJobLV(1), illerJobLV(1), soundJobLV(1), writerJobLV(1)
 	{
 	}
 
@@ -56,6 +57,7 @@ public:
 
 /////////////////////////////////////////////////////////////////////
 //직원 직업따른 능력치
+/*	
 	void Staff()
 	{
 		if(job == pgrm)
@@ -87,20 +89,21 @@ public:
 			Sskill = 10+(rand()%10) + ((writerJobLV-1)*4);
 		}
 	}
+	*/
 
 ///////////////////////////////////////////////////////////
 //연봉계산
 
-	int SaleryCap()
+	/*int SaleryCap()
 	{
 		Salery = Salery + ((Salery / 10)* (SumJobLevel - 4));
 		
 		return Salery;
-	}
+	}*/
 	
 //////////////////////////////////////////////////////////
 //데이터 입력
-	void StData(int id, int wp, char name[64], int plv, int wlv, int ilv, int slv)
+	/*void StData(int id, int wp, char name[64])
 	{
 		staff[id].Name = name;
 		staff[id].Job = wp;
@@ -108,11 +111,11 @@ public:
 		staff[id].illsk = Iskill;
 		staff[id].wrtsk = Wskill;
 		staff[id].sndsk = Sskill;
-		staff[id].pgrmLV = plv;
-		staff[id].wrtLV = wlv;
-		staff[id].illerLV = ilv;
-		staff[id].soundLV = slv;
-	}
+		staff[id].pgrmLV = pgrmJobLV;
+		staff[id].wrtLV = writerJobLV;
+		staff[id].illerLV = illerJobLV;
+		staff[id].soundLV = soundJobLV;
+	}*/
 
 private:
 	//직업 id;
@@ -122,19 +125,10 @@ private:
 	//연봉
 	static int Salery;
 	const int BasicSalery;
-	int Pskill; //프로그래밍 능력
-	int Iskill;	//일러스트 능력
-	int Wskill;	//작가 능력
-	int Sskill;	//사운드 능력
-
-	int SumJobLevel; //레벨 총합
-	int pgrmJobLV;
-	int illerJobLV;
-	int soundJobLV;
-	int writerJobLV;
+	
 
 	std::string Cname;
 
-	CharInfo staff[4];
+	//CharInfo staff[4];
 	
 };

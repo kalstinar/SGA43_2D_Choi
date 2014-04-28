@@ -5,7 +5,24 @@
 #include "LoadResource.h"
 #include "GameProgress.h"
 #include "CharData.h"
+#include "Game.h"
 
+struct CharInfo
+{
+	std::string Name;
+	int Job;
+	
+	int prosk;
+	int wrtsk;
+	int illsk;
+	int sndsk;
+
+	int sumLV;
+	int pgrmLV;
+	int wrtLV;
+	int illerLV;
+	int soundLV;
+};//캐릭터 데이터 구조체
 
 class SoundApp : public MainWindow<SoundApp>
 {
@@ -22,8 +39,12 @@ public :
 	SoundApp()
 		: mode(MAIN_MODE1), gStruct(Simulation), gGenre(Baseball), tResult(Good)
 		,job(pgrm), person(P1) 
+		,gWeek(1), gMonth(3), gYear(1)
 		,GmProg(false), GmProg2(false), GmProg3(false)
 		, GmProg4(false), GmProg5(false), GmProg6(false)
+		,Pskill(1), Wskill(1), Iskill(1), Sskill(1)
+		,SumJobLV(4), writerJobLV(1), soundJobLV(1), pgrmJobLV(1), illerJobLV(1)
+		,Tpoint(0) ,Gmp(0)
 		, FPS_dt(0), FPS_frame(0)
 		, bGrabWindow(false), hMainWnd(NULL)
 		, dx(0), bg_update_dt(0), bg_update_delay(5)
@@ -35,6 +56,11 @@ public :
 
 		gStruct = Simulation;
 		gGenre = Baseball;
+
+		StData(0, pgrm, "짝퉁강철남");
+		StData(1, writer, "홍일점?");
+		StData(2, iller, "그림이취미");
+		StData(3, sound, "복면다로");
 	}
 
 	~SoundApp()
@@ -51,7 +77,111 @@ public :
 		GmProg6 = false;
 		person =P1;
 		job = pgrm;
+		Tpoint = 0;
+		Gmp = 0;
+		gWeek = 1;
+		gMonth = 3;
+		gYear = 1;
+
 	}
+
+	//작업의 결과 예정 산출
+	int GoodTask(int gstruct, int ggenre, int tRe)
+	{
+		if(gstruct == Simulation && ggenre == Strategy)
+		{
+			tRe = Good;
+		}
+		
+		else if(gstruct == RolePlaying && ggenre == Fantasy)
+		{
+			tRe = Good;
+		}
+
+		else if(gstruct == gAction && ggenre == Gun)
+		{
+			tRe = Good;
+		}
+
+		else if(gstruct == Sport && ggenre == Baseball)
+		{
+			tRe = Good;
+		}
+
+		else if(gstruct == Simulation && ggenre == Fantasy)
+		{
+			tRe = Bad;
+		}
+
+		else if(gstruct == RolePlaying && ggenre == Baseball)
+		{
+			tRe = Bad;
+		}
+
+		else if(gstruct == gAction && ggenre == Strategy)
+		{
+			tRe = Bad;
+		}
+
+		else if(gstruct == Sport && ggenre == Gun)
+		{
+			tRe = Bad;
+		}
+
+		else 
+		{
+			tRe = Normal;
+		}
+
+		return tRe;
+	}
+	void Staff()
+	{
+		if(job == pgrm)
+		{
+			Pskill = 40+(rand()%40) + ((pgrmJobLV-1)*16);
+			Iskill = 5+(rand()%5) + ((pgrmJobLV-1)*2);
+			Wskill = 5+(rand()%5) + ((pgrmJobLV-1)*2);
+			Sskill = 10+(rand()%10) + ((pgrmJobLV-1)*4);
+		}
+		else if(job == iller)
+		{
+			Pskill = 5+(rand()%5) + ((illerJobLV-1)*2);
+			Iskill = 35+(rand()%35) + ((illerJobLV-1)*14);
+			Wskill = 10+(rand()%10) + ((illerJobLV-1)*4);
+			Sskill = 10+(rand()%10) + ((illerJobLV-1)*4);
+		}
+		else if(job == sound)
+		{
+			Pskill = 5+(rand()%5) + ((soundJobLV-1)*2);
+			Iskill = 5+(rand()%5) + ((soundJobLV-1)*2);
+			Wskill = 5+(rand()%5) + ((soundJobLV-1)*2);
+			Sskill = 45+(rand()%45) + ((soundJobLV-1)*18);
+		}
+		else if(job == writer)
+		{
+			Pskill = 5+(rand()%5) + ((writerJobLV-1)*2);
+			Iskill = 5+(rand()%5) + ((writerJobLV-1)*2);
+			Wskill = 40+(rand()%40) + ((writerJobLV-1)*16);
+			Sskill = 10+(rand()%10) + ((writerJobLV-1)*4);
+		}
+
+		SumJobLV = writerJobLV + soundJobLV + illerJobLV + pgrmJobLV;
+	}
+	void StData(int id, int wp, char name[64])
+	{
+		staff[id].Name = name;
+		staff[id].Job = wp;
+		staff[id].prosk = Pskill;
+		staff[id].illsk = Iskill;
+		staff[id].wrtsk = Wskill;
+		staff[id].sndsk = Sskill;
+		staff[id].pgrmLV = pgrmJobLV;
+		staff[id].wrtLV = writerJobLV;
+		staff[id].illerLV = illerJobLV;
+		staff[id].soundLV = soundJobLV;
+	}
+
 
 	void Input(DWORD tick)
 	{
@@ -115,6 +245,11 @@ public :
 			btnMake.Update(tick);
 		}
 
+		if(mode == INMAKE_MODE)
+		{
+			btnCancel.Update(tick);
+		}
+
 		if(mode == MAKEMN_MODE)
 		{
 			if(GmProg3 == false)
@@ -148,6 +283,12 @@ public :
 			btnGenre5.Update(tick);
 			btnNext2.Update(tick);
 		}
+		
+		else if(mode == MAKE_MODE7)
+		{
+			btnNext3.Update(tick);
+		}
+
 
 		else if(mode == MAKE_MODE3)
 		{
@@ -163,6 +304,22 @@ public :
 					btnOk2.Update(tick);
 			}
 		}
+	
+		else if(mode == MAKE_MODE8)
+		{
+			btnScore.Update(tick);
+		}
+		
+		else if(mode == MAKE_MODE9)
+		{
+			btnCancel.Update(tick);
+		}
+
+		else if(mode == MAKE_MODE4)
+		{
+			
+		}
+		
 
 //기타 버튼
 		
@@ -194,17 +351,41 @@ public :
 			FPS_dt -= 1000;
 			FPS_frame = 0;
 		}
+		
+		if(mode == INGAME_MODE)
+		{
+			if(Tpoint >= 7000)
+			{
+				Tpoint = 0;
+				++gWeek; 
+			}
+			if(gWeek > 4)
+			{
+				gWeek = 0;
+				++gMonth;
+			}
+			if(gMonth > 12)
+			{
+				gMonth = 0;
+				++gYear;
+			}
+		
+			Tpoint += tick;
+		}
 
 		FPS_dt += tick;
 		FPS_frame++;
 		dwFPS = FPS_frame*1000/FPS_dt;
+		
+
+		
 
 		if (bg_update_dt > bg_update_delay)
 		{
 			int count = bg_update_dt/bg_update_delay;
 
 			/*for (int i = 0; i < count; i++)
-			{
+			{MA
 				dx--;
 				if (dx <= -ImageDepot.get("block")->getRect().width())
 					dx = 0;
@@ -237,6 +418,7 @@ public :
 		}
 
 	}
+
 	void Render(DWORD tick)
 	{
 		buffer << RGB(100,255,255);
@@ -265,6 +447,52 @@ public :
 
 		ImageDepot["Calendar"]->Move(Rect(0,0,850,50));
 		ImageDepot["Calendar"]->Draw(buffer);
+
+
+		if(Tpoint >= 0 && Tpoint < 1000)
+		{				
+			ImageDepot["tPointer"]->Move(Rect(300,7,304,7+4));
+			ImageDepot["tPointer"]->Draw(buffer);
+		}
+		else if(Tpoint >= 1000 && Tpoint < 2000)
+		{
+			ImageDepot["tPointer"]->Move(Rect(300,8+4,304,12+4));
+			ImageDepot["tPointer"]->Draw(buffer);
+			Gmp++;
+		}
+		else if(Tpoint >= 2000 && Tpoint < 3000)
+		{
+			ImageDepot["tPointer"]->Move(Rect(300,13+4,304,17+4));
+			ImageDepot["tPointer"]->Draw(buffer);
+			Gmp++;
+		}
+		else if(Tpoint >= 3000 && Tpoint < 4000)
+		{
+			ImageDepot["tPointer"]->Move(Rect(300,18+4,304,22+4));
+			ImageDepot["tPointer"]->Draw(buffer);
+			Gmp++;
+		}
+		else if(Tpoint >= 4000 && Tpoint < 5000)
+		{
+			ImageDepot["tPointer"]->Move(Rect(300,23+4,304,27+4));
+			ImageDepot["tPointer"]->Draw(buffer);
+			Gmp++;
+		}
+		else if(Tpoint >= 5000 && Tpoint < 6000)
+		{
+			ImageDepot["tPointer"]->Move(Rect(300,28+4,304,32+4));
+			ImageDepot["tPointer"]->Draw(buffer);
+			Gmp++;
+		}
+		else if(Tpoint >= 6000 && Tpoint < 7000)
+		{
+			ImageDepot["tPointer"]->Move(Rect(300,33+4,304,38+4));
+			ImageDepot["tPointer"]->Draw(buffer);
+			Gmp++;
+		}
+		
+		ImageDepot["tText"]->Move(Rect(10,0,290,50));
+		ImageDepot["tText"]->Draw(buffer);
 
 		ImageDepot["IGMenu"]->Move(Rect(700,50,850,550));
 		ImageDepot["IGMenu"]->Draw(buffer);
@@ -310,6 +538,29 @@ public :
 		btnIGMenu3.Draw(buffer);
 		btnIGMenu4.Draw(buffer);
 		btnIGMenu5.Draw(buffer);
+
+		//if(GmProg2 == false)
+		//{
+		//	person = P1;
+		//}
+		//else if(GmProg2 == true)
+		//{
+		//	if(GmProg3 == false) //시작
+		//	{
+		//		person = P2;
+		//	}
+		//	else if(GmProg3 == true)
+		//	{
+		//		if(GmProg4 == false)//음악
+		//		{
+		//			person = P3;
+		//		}
+		//		else if(GmProg4 == true) // 미술
+		//		{
+		//					person = P4;
+		//		}
+		//	}
+		//}
 		
 
 		if(GmProg3 == true)
@@ -367,7 +618,6 @@ public :
 		Chair4.Draw(buffer, Rect(267+78,290+49,267+78+70,290+49+85));
 */
 
-		
 		if (mode == CONTROL_MODE)
 		{
 			ImageDepot["gray"]->Move(rcClient);
@@ -386,6 +636,20 @@ public :
 			//btnClMake.Draw(buffer);
 		}
 
+		if(mode == INMAKE_MODE)
+		{
+			btnCancel.Draw(buffer);
+
+			ImageDepot["SubWin4"]->Move(Rect(50,75,650,525));
+			ImageDepot["SubWin4"]->Draw(buffer);
+
+			ImageDepot["White"]->Move(Rect(70,130,630,430));
+			ImageDepot["White"]->Draw(buffer);
+
+			ImageDepot["MenuText4"]->Move(Rect(270, 453, 430, 513));
+			ImageDepot["MenuText4"]->Draw(buffer);
+		}
+		
 		if(mode == MAKEMN_MODE)
 		{
 			if(GmProg3 == false)
@@ -447,19 +711,21 @@ public :
 				}
 			}
 
+			
 			else if(GmProg3 == true)
 			{
 				btnCancel.Draw(buffer);
 
-				ImageDepot["SubWin4"]->Move(Rect(70,130,630,430));
-				ImageDepot["SubWin4"]->Draw(buffer);
+				ImageDepot["SubWin8"]->Move(Rect(50,75,650,525));
+				ImageDepot["SubWin8"]->Draw(buffer);
 
-				ImageDepot["White"]->Move(Rect(50,75,650,525));
-				ImageDepot["White"]->Draw(buffer);
+				ImageDepot["Warning"]->Move(Rect(50,75,650,525));
+				ImageDepot["Warning"]->Draw(buffer);
 
 				ImageDepot["MenuText4"]->Move(Rect(270, 453, 430, 513));
 				ImageDepot["MenuText4"]->Draw(buffer);
 			}
+			
 		}
 		//장르
 		else if(mode == MAKE_MODE1)
@@ -525,6 +791,28 @@ public :
 			ImageDepot["MenuText2"]->Draw(buffer);
 		}
 
+		else if(mode == MAKE_MODE7)
+		{
+			ImageDepot["SubWin8"]->Move(Rect(50,75,650,525));
+			ImageDepot["SubWin8"]->Draw(buffer);
+			
+			if(Gmp == 0)
+			{
+				btnNext3.Draw(buffer);
+			}
+			else if(Gmp == 20)
+			{
+				btnM4.Draw(buffer);
+			}
+			else if(Gmp == 80)
+			{
+				btnM5.Draw(buffer);
+			}
+
+			ImageDepot["MenuText1"]->Move(Rect(270, 453, 430, 513));
+			ImageDepot["MenuText1"]->Draw(buffer);
+		}
+
 		else if(mode == MAKE_MODE3)
 		{
 			ImageDepot["SubWin4"]->Move(Rect(50,75,650,525));
@@ -539,46 +827,46 @@ public :
 
 				ImageDepot["MenuText1"]->Move(Rect(430, 370, 580, 430));
 				ImageDepot["MenuText1"]->Draw(buffer);
-				
-				switch(person)
-				{
-				case P1:
+					
+				//switch(person)
+				//{
+				//case P1:
 					ImageDepot["Programmer"]->Move(Rect(180,185,240,365));
 					ImageDepot["Programmer"]->Draw(buffer);
-					break;
-				case P2:
-					ImageDepot["Writer"]->Move(Rect(180,185,240,365));
-					ImageDepot["Writer"]->Draw(buffer);
-					break;
-				case P3:
-					ImageDepot["Artist"]->Move(Rect(180,185,240,365));
-					ImageDepot["Artist"]->Draw(buffer);
-					break;
-				case P4:
-					ImageDepot["SD"]->Move(Rect(180,185,240,365));
-					ImageDepot["SD"]->Draw(buffer);
-					break;
-				}
+				//	break;
+				//case P2:
+				//	ImageDepot["Writer"]->Move(Rect(180,185,240,365));
+				//	ImageDepot["Writer"]->Draw(buffer);
+				//	break;
+				//case P3:
+				//	ImageDepot["Artist"]->Move(Rect(180,185,240,365));
+				//	ImageDepot["Artist"]->Draw(buffer);
+				//	break;
+				//case P4:
+				//	ImageDepot["SD"]->Move(Rect(180,185,240,365));
+				//	ImageDepot["SD"]->Draw(buffer);
+				//	break;
+				//}
 
-				switch(job)
-				{
-				case pgrm:
+				//switch(job)
+				//{
+				//case pgrm:
 					ImageDepot["Job1"]->Move(Rect(120,215,230,385));
 					ImageDepot["Job1"]->Draw(buffer);
-					break;
-				case writer:
-					ImageDepot["Job2"]->Move(Rect(120,215,230,385));
-					ImageDepot["Job2"]->Draw(buffer);
-					break;
-				case iller:
-					ImageDepot["Job3"]->Move(Rect(120,215,230,385));
-					ImageDepot["Job3"]->Draw(buffer);
-					break;
-				case sound:
-					ImageDepot["Job4"]->Move(Rect(120,215,230,385));
-					ImageDepot["Job4"]->Draw(buffer);
-					break;
-				}
+				//	break;
+				//case writer:
+				//	ImageDepot["Job2"]->Move(Rect(120,215,230,385));
+				//	ImageDepot["Job2"]->Draw(buffer);
+				//	break;
+				//case iller:
+				//	ImageDepot["Job3"]->Move(Rect(120,215,230,385));
+				//	ImageDepot["Job3"]->Draw(buffer);
+				//	break;
+				//case sound:
+				//	ImageDepot["Job4"]->Move(Rect(120,215,230,385));
+				//	ImageDepot["Job4"]->Draw(buffer);
+				//	break;
+				//}
 			}
 			else if(GmProg == true)
 			{
@@ -610,18 +898,210 @@ public :
 					
 					ImageDepot["MenuText3"]->Move(Rect(270, 453, 430, 513));
 					ImageDepot["MenuText3"]->Draw(buffer);
-
-					GmProg3 = true;
 				}
 			}
 		}
 
-		TCHAR szDebug[200];
-		_stprintf_s(szDebug, _T("FPS : %08d"), dwFPS);
-		::DrawText(buffer, szDebug, -1, &rcClient, DT_LEFT | DT_TOP);
+		else if(mode == MAKE_MODE8)
+		{
+			//tResult = GoodTask(gStruct, gGenre, tResult);
+				
+			switch(tResult =GoodTask(gStruct, gGenre, tResult))
+			{
+			case Good:
+				ImageDepot["SubWin5"]->Move(Rect(50,75,650,525));
+				ImageDepot["SubWin5"]->Draw(buffer);
+				break;
+			case Normal:
+				ImageDepot["SubWin6"]->Move(Rect(50,75,650,525));
+				ImageDepot["SubWin6"]->Draw(buffer);
+				break;
+			case Bad:
+				ImageDepot["SubWin7"]->Move(Rect(50,75,650,525));
+				ImageDepot["SubWin7"]->Draw(buffer);
+				break;
+			}
+
+			btnScore.Draw(buffer);
+
+			ImageDepot["MenuText1"]->Move(Rect(270, 453, 430, 513));
+			ImageDepot["MenuText1"]->Draw(buffer);
+
+			GmProg3 = true;
+		}
+
+		else if(mode == MAKE_MODE4)
+		{
+			ImageDepot["SubWin4"]->Move(Rect(50,75,650,525));
+			ImageDepot["SubWin4"]->Draw(buffer);
+
+			if(GmProg4 == false)
+			{
+				btnNext4.Draw(buffer);
+
+				ImageDepot["Point"]->Move(Rect(380,155,440,355));
+				ImageDepot["Point"]->Draw(buffer);
+
+				ImageDepot["MenuText1"]->Move(Rect(430, 370, 580, 430));
+				ImageDepot["MenuText1"]->Draw(buffer);
+				
+				//switch(person)
+				//{
+				//case P1:
+				//	ImageDepot["Programmer"]->Move(Rect(180,185,240,365));
+				//	ImageDepot["Programmer"]->Draw(buffer);
+				//	break;
+				//case P2:
+				//	ImageDepot["Writer"]->Move(Rect(180,185,240,365));
+				//	ImageDepot["Writer"]->Draw(buffer);
+				//	break;
+				//case P3:
+					ImageDepot["Artist"]->Move(Rect(180,185,240,365));
+					ImageDepot["Artist"]->Draw(buffer);
+				//	break;
+				//case P4:
+				//	ImageDepot["SD"]->Move(Rect(180,185,240,365));
+				//	ImageDepot["SD"]->Draw(buffer);
+				//	break;
+				//}
+
+				//switch(job)
+				//{
+				//case pgrm:
+				//	ImageDepot["Job1"]->Move(Rect(120,215,230,385));
+				//	ImageDepot["Job1"]->Draw(buffer);
+				//	break;
+				//case writer:
+				//	ImageDepot["Job2"]->Move(Rect(120,215,230,385));
+				//	ImageDepot["Job2"]->Draw(buffer);
+				//	break;
+				//case iller:
+					ImageDepot["Job3"]->Move(Rect(120,215,230,385));
+					ImageDepot["Job3"]->Draw(buffer);
+				//	break;
+				//case sound:
+				//	ImageDepot["Job4"]->Move(Rect(120,215,230,385));
+				//	ImageDepot["Job4"]->Draw(buffer);
+				//	break;
+				//}
+			}
+			else if(GmProg4 == true)
+			{
+				ImageDepot["White"]->Move(Rect(70,130,630,430));
+				ImageDepot["White"]->Draw(buffer);
+				
+				btnCancel.Draw(buffer);
+
+				ImageDepot["White"]->Move(Rect(70,130,630,430));
+				ImageDepot["White"]->Draw(buffer);
+
+				ImageDepot["Point2"]->Move(Rect(250,255,310,305));
+				ImageDepot["Point2"]->Draw(buffer);
+
+				ImageDepot["Point3"]->Move(Rect(340,255,400,305));
+				ImageDepot["Point3"]->Draw(buffer);
+
+				ImageDepot["Point4"]->Move(Rect(430,255,490,305));
+				ImageDepot["Point4"]->Draw(buffer);
+
+				ImageDepot["Point5"]->Move(Rect(520,255,580,305));
+				ImageDepot["Point5"]->Draw(buffer);
+
+				ImageDepot["MenuText3"]->Move(Rect(270, 453, 430, 513));
+				ImageDepot["MenuText3"]->Draw(buffer);
+			}
+		}
+		
+		else if(mode == MAKE_MODE5)
+		{
+			ImageDepot["SubWin4"]->Move(Rect(50,75,650,525));
+			ImageDepot["SubWin4"]->Draw(buffer);
+
+			if(GmProg5 == false)
+			{
+				btnNext4.Draw(buffer);
+
+				ImageDepot["Point"]->Move(Rect(380,155,440,355));
+				ImageDepot["Point"]->Draw(buffer);
+
+				ImageDepot["MenuText1"]->Move(Rect(430, 370, 580, 430));
+				ImageDepot["MenuText1"]->Draw(buffer);
+				
+				//switch(person)
+				//{
+				//case P1:
+				//	ImageDepot["Programmer"]->Move(Rect(180,185,240,365));
+				//	ImageDepot["Programmer"]->Draw(buffer);
+				//	break;
+				//case P2:
+				//	ImageDepot["Writer"]->Move(Rect(180,185,240,365));
+				//	ImageDepot["Writer"]->Draw(buffer);
+				//	break;
+				//case P3:
+					//ImageDepot["Artist"]->Move(Rect(180,185,240,365));
+					//ImageDepot["Artist"]->Draw(buffer);
+				//	break;
+				//case P4:
+					ImageDepot["SD"]->Move(Rect(180,185,240,365));
+					ImageDepot["SD"]->Draw(buffer);
+				//	break;
+				//}
+
+				//switch(job)
+				//{
+				//case pgrm:
+				//	ImageDepot["Job1"]->Move(Rect(120,215,230,385));
+				//	ImageDepot["Job1"]->Draw(buffer);
+				//	break;
+				//case writer:
+				//	ImageDepot["Job2"]->Move(Rect(120,215,230,385));
+				//	ImageDepot["Job2"]->Draw(buffer);
+				//	break;
+				//case iller:
+					//ImageDepot["Job3"]->Move(Rect(120,215,230,385));
+					//ImageDepot["Job3"]->Draw(buffer);
+				//	break;
+				//case sound:
+					ImageDepot["Job4"]->Move(Rect(120,215,230,385));
+					ImageDepot["Job4"]->Draw(buffer);
+				//	break;
+				//}
+			}
+			else if(GmProg5 == true)
+			{
+				ImageDepot["White"]->Move(Rect(70,130,630,430));
+				ImageDepot["White"]->Draw(buffer);
+				
+				btnCancel.Draw(buffer);
+
+				ImageDepot["White"]->Move(Rect(70,130,630,430));
+				ImageDepot["White"]->Draw(buffer);
+
+				ImageDepot["Point2"]->Move(Rect(250,255,310,305));
+				ImageDepot["Point2"]->Draw(buffer);
+
+				ImageDepot["Point3"]->Move(Rect(340,255,400,305));
+				ImageDepot["Point3"]->Draw(buffer);
+
+				ImageDepot["Point4"]->Move(Rect(430,255,490,305));
+				ImageDepot["Point4"]->Draw(buffer);
+
+				ImageDepot["Point5"]->Move(Rect(520,255,580,305));
+				ImageDepot["Point5"]->Draw(buffer);
+
+				ImageDepot["MenuText3"]->Move(Rect(270, 453, 430, 513));
+				ImageDepot["MenuText3"]->Draw(buffer);
+			}
+		}
+
+
+		//TCHAR szDebug[200];
+		//_stprintf_s(szDebug, _T("FPS : %08d"), dwFPS);
+		//::DrawText(buffer, szDebug, -1, &rcClient, DT_LEFT | DT_TOP);
 
 		buffer.Draw();
 	}
+
 
 
 
@@ -787,13 +1267,15 @@ protected :
 		btnNext1.SetImageOn(_T("BtnGS.bmp"), Rect(0,60,300,120));
 		btnNext1.SetImageOff(_T("BtnGS.bmp"), Rect(0,120,300,180));
 		btnNext1.SetButtonRect(Rect(420, 445, 570, 505));
-		btnNext1.SetAction(&SoundApp::Proxy, hWnd, WM_CHANGEMODE, MAKE_MODE3, 0);
+		btnNext1.SetAction(&SoundApp::Proxy, hWnd, WM_CHANGEMODE, MAKE_MODE7, 0);
+
+		
 
 		btnCancel.Attach(hWnd);
 		btnCancel.SetImageOn(_T("BtnGS.bmp"), Rect(0,60,300,120));
 		btnCancel.SetImageOff(_T("BtnGS.bmp"), Rect(0,120,300,180));
 		btnCancel.SetButtonRect(Rect(270, 453, 430, 513));
-		btnCancel.SetAction(&SoundApp::Proxy, hWnd, WM_CHANGEMODE, INGAME_MODE, 0);
+		btnCancel.SetAction(&SoundApp::Proxy, hWnd, WM_CHANGEMODE, INGAME_MODE, 0); //MAKE4, MAKE5
 		
 //MAKE_MODE1
 		btnStruct2.Attach(hWnd);
@@ -851,6 +1333,25 @@ protected :
 		btnGenre5.SetButtonRect(Rect(100, 380, 600, 440));
 		btnGenre5.SetAction(&SoundApp::Proxy, hWnd, WM_GECHANGEMODE, Fantasy, 0);
 
+//MAKE_MODE7
+		btnNext3.Attach(hWnd);
+		btnNext3.SetImageOn(_T("BtnGS.bmp"), Rect(0,60,300,120));
+		btnNext3.SetImageOff(_T("BtnGS.bmp"), Rect(0,120,300,180));
+		btnNext3.SetButtonRect(Rect(270, 453, 430, 513));
+		btnNext3.SetAction(&SoundApp::Proxy, hWnd, WM_CHANGEMODE, MAKE_MODE3, 0);
+
+		btnM4.Attach(hWnd);
+		btnM4.SetImageOn(_T("BtnGS.bmp"), Rect(0,60,300,120));
+		btnM4.SetImageOff(_T("BtnGS.bmp"), Rect(0,120,300,180));
+		btnM4.SetButtonRect(Rect(270, 453, 430, 513));
+		btnM4.SetAction(&SoundApp::Proxy, hWnd, WM_CHANGEMODE, MAKE_MODE4, 0);
+
+		btnM5.Attach(hWnd);
+		btnM5.SetImageOn(_T("BtnGS.bmp"), Rect(0,60,300,120));
+		btnM5.SetImageOff(_T("BtnGS.bmp"), Rect(0,120,300,180));
+		btnM5.SetButtonRect(Rect(270, 453, 430, 513));
+		btnM5.SetAction(&SoundApp::Proxy, hWnd, WM_CHANGEMODE, MAKE_MODE5, 0);
+		
 //MAKE_MODE3
 		btnNext4.Attach(hWnd);
 		btnNext4.SetImageOn(_T("BtnGS.bmp"), Rect(0,60,300,120));
@@ -862,13 +1363,26 @@ protected :
 		btnOk.SetImageOn(_T("BtnGS.bmp"), Rect(0,60,300,120));
 		btnOk.SetImageOff(_T("BtnGS.bmp"), Rect(0,120,300,180));
 		btnOk.SetButtonRect(Rect(270, 453, 430, 513));
-		btnOk.SetAction(&SoundApp::Proxy, hWnd, WM_GMPRO2, 0, 0);
+		btnOk.SetAction(&SoundApp::Proxy, hWnd, WM_GMPRO2, 0, 0); //
 
 		btnOk2.Attach(hWnd);
 		btnOk2.SetImageOn(_T("BtnGS.bmp"), Rect(0,60,300,120));
 		btnOk2.SetImageOff(_T("BtnGS.bmp"), Rect(0,120,300,180));
 		btnOk2.SetButtonRect(Rect(270, 453, 430, 513));
-		btnOk2.SetAction(&SoundApp::Proxy, hWnd, WM_CHANGEMODE, INGAME_MODE, 0);
+		btnOk2.SetAction(&SoundApp::Proxy, hWnd, WM_CHANGEMODE, MAKE_MODE8, 0);
+
+
+		
+
+//MAKE_MODE8
+		btnScore.Attach(hWnd);
+		btnScore.SetImageOn(_T("BtnGS.bmp"), Rect(0,60,300,120));
+		btnScore.SetImageOff(_T("BtnGS.bmp"), Rect(0,120,300,180));
+		btnScore.SetButtonRect(Rect(270, 453, 430, 513));
+		btnScore.SetAction(&SoundApp::Proxy, hWnd, WM_CHANGEMODE, MAKE_MODE9, 0);
+
+//MAKE_MODE9
+		
 		
 //INGAME_MODE - MAKE
 		//1
@@ -876,9 +1390,21 @@ protected :
 		btnGameProg.SetImageOn(_T("BtnGS.bmp"), Rect(0,180,800,550));
 		btnGameProg.SetImageOff(_T("BtnGS.bmp"), Rect(0,330,800,550));
 		btnGameProg.SetButtonRect(Rect(0, 550, 850, 700));
-		btnGameProg.SetAction(&SoundApp::Proxy, hWnd, WM_CHANGEMODE, MAKEMN_MODE, 0);
+		btnGameProg.SetAction(&SoundApp::Proxy, hWnd, WM_CHANGEMODE, INMAKE_MODE, 0);
+		
 		//2
-		btnOk3.
+		btnOk3.Attach(hWnd);
+		btnOk3.SetImageOn(_T("BtnGS.bmp"), Rect(0,60,300,120));
+		btnOk3.SetImageOff(_T("BtnGS.bmp"), Rect(0,120,300,180));
+		btnOk3.SetButtonRect(Rect(270, 453, 430, 513));
+		btnOk3.SetAction(&SoundApp::Proxy, hWnd, WM_CHANGEMODE, MAKE_MODE3, 0);
+
+		//2-1
+		btnOk4.Attach(hWnd);
+		btnOk4.SetImageOn(_T("BtnGS.bmp"), Rect(0,60,300,120));
+		btnOk4.SetImageOff(_T("BtnGS.bmp"), Rect(0,120,300,180));
+		btnOk4.SetButtonRect(Rect(270, 453, 430, 513));
+		btnOk4.SetAction(&SoundApp::Proxy, hWnd, WM_CHANGEMODE, MAKE_MODE7, 0);
 
 		buffer.Attach(hWnd);
 		return 0;
@@ -969,6 +1495,7 @@ private :
 	HDC hBitmapDC;
 	//Image gray;
 	//Image test;
+	Image Animationset;
 
 	//Image block;
 
@@ -986,11 +1513,26 @@ private :
 	bool GmProg5; //음악
 	bool GmProg6; //1~5를 전부 다시 false로
 
+	//스킬 능력
+	int Pskill; //프로그래밍 능력
+	int Iskill;	//일러스트 능력
+	int Wskill;	//작가 능력
+	int Sskill;	//사운드 능력
 
+	//직업 레벨
+	int SumJobLV; //레벨 총합
+	int pgrmJobLV;
+	int illerJobLV;
+	int soundJobLV;
+	int writerJobLV;
+
+	int Gmp; //게임 제작 진행상황
+
+	//게임 시간
+	int gWeek;
+	int gMonth;
+	int gYear;
 	
-
-	GameProgress GMPS;
-
 	// FPS 출력용도.
 	// FPS : Frame Per Second.
 	// FPS_dt(ms) : FPS_frame = 1000ms : x
@@ -998,6 +1540,8 @@ private :
 	DWORD FPS_dt;
 	DWORD FPS_frame;
 	DWORD dwFPS;
+	
+	DWORD Tpoint;
 
 	//컨트롤 모드 버튼
 	Button btnMini;
@@ -1060,16 +1604,25 @@ private :
 
 	//서브 윈도우 진행관련 버튼
 	Button btnNext1; //MAKEMN
-	Button btnPrev1;
+	Button btnPrev1; //
 	Button btnNext2; //MAKE1, MAKE2
+	Button btnNext3; //MAKE7 -> 3
+	Button btnM4; //MAKE7 -> 4
+	Button btnM5; //MAKE7 -> 5
 	Button btnNext4; //MAKE3
 	Button btnOk; //MAKE3-2
 	Button btnOk2; //MAKE3-3
+	Button btnScore; //MAKE8
 	Button btnOk3; //미술->
+	
 	Button btnOk4; //음악->
+	Button btnNext5; //이 것도 음악
+
 	Button btnOk5; //버그체크->
 	Button btnOk6; //모두 false로 초기화!
+	
 	Button btnCancel;
+	
 	
 
 	//게임제작모드
@@ -1085,4 +1638,8 @@ private :
 	/////////////////////////
 	// rotate 
 	float ang;
+	//점수
+	Game gScore;
+	//구조체 사용
+	CharInfo staff[4];
 };

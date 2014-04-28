@@ -44,14 +44,22 @@ enum mode_id
 	SUBMENU_MODE2,
 	MARKET_MODE,	//상점
 	INFO_MODE,	//정보	
+	
+	INMAKE_MODE,	//게임제작 진행도
+	//제작 기초
 	MAKEMN_MODE,
 	MAKE_MODE1,	//제작1(대장르)
 	MAKE_MODE2,	//제작2(소장르)
-	MAKE_MODE3,	//제작3(기본 설정)
-	MAKE_MODE4,	
-	MAKE_MODE5,	
-	MAKE_MODE6,	
-	//INMAKE_MODE	//게임제작 과정
+	//보너스 점수 획득 찬스
+	MAKE_MODE3,	//제작3(기본 점수 - '1, 2'번)
+	MAKE_MODE4,	//제작4(미술 점수 - 1, 2, '3'번)
+	MAKE_MODE5,	//제작5(음악 점수 - 1, 2, 3, '4')
+	MAKE_MODE6, //제작6->버그 제거
+	//여기는 부가적인 제작창
+	MAKE_MODE7, //보너스 점수창을 부르기 위한 전초 과정
+	MAKE_MODE8, //결과 확인
+	MAKE_MODE9,  //결과 보고서
+	
 };
 
 enum Game_Struct
@@ -106,3 +114,4 @@ enum person_id
 	P3,
 	P4
 };
+

@@ -40,50 +40,55 @@ public:
 	}
 
 //작업의 결과 예정 산출
-	int GoodTask(int gStruct, int gGenre)
+	/*
+	void GoodTask(int gStruct, int gGenre, int tRe)
 	{
-		if(G_Struct == Simulation && G_Genre == Strategy)
+		if(gStruct == Simulation && gGenre == Strategy)
 		{
-			T_Result = Good;
+			tRe = Good;
 		}
 		
-		if(G_Struct == RolePlaying && G_Genre == Fantasy)
+		if(gStruct == RolePlaying && gGenre == Fantasy)
 		{
-			T_Result = Good;
+			tRe = Good;
 		}
 
-		if(G_Struct == Action && G_Genre == Gun)
+		if(G_Struct == gAction && gGenre == Gun)
 		{
-			T_Result = Good;
+			tRe = Good;
 		}
 
-		if(G_Struct == Sport && G_Genre == Baseball)
+		if(gStruct == Sport && gGenre == Baseball)
 		{
-			T_Result = Good;
+			tRe = Good;
 		}
 
-		if(G_Struct == Simulation && G_Genre == Fantasy)
+		if(gStruct == Simulation && gGenre == Fantasy)
 		{
-			T_Result = Bad;
+			tRe = Bad;
 		}
 
-		if(G_Struct == RolePlaying && G_Genre == Baseball)
+		if(gStruct == RolePlaying && gGenre == Baseball)
 		{
-			T_Result = Bad;
+			tRe = Bad;
 		}
 
-		if(G_Struct == Action && G_Genre == Strategy)
+		if(G_Struct == gAction && gGenre == Strategy)
 		{
-			T_Result = Bad;
+			tRe = Bad;
 		}
 
-		if(G_Struct == Sport && G_Genre == Gun)
+		if(gStruct == Sport && gGenre == Gun)
 		{
-			T_Result = Bad;
+			tRe = Bad;
 		}
 
-		else T_Result = Normal;
+		else tRe = Normal;
+
+		
 	}
+	*/
+	
 
 //작업 비용
 	int GameMakeSpend()
@@ -116,4 +121,5 @@ private:
 	int T_Result;
 	int G_Spend;
 	int G_RMoney;
+	
 };
